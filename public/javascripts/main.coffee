@@ -19,6 +19,7 @@ require ["backbone", "jquery", "underscore", "application_view_controller"], (Ba
 
   playNote = =>
     source = context.createBufferSource()
+#     source.buffer = @applicationViewController.sampleManager.get("/sounds/test.wav")
     source.buffer = buffer
     source.connect(context.destination)
     source.connect(feedbackNode)
@@ -28,7 +29,7 @@ require ["backbone", "jquery", "underscore", "application_view_controller"], (Ba
     buffer = context.createBuffer(data, false)
 
   request = new XMLHttpRequest()
-  request.open("GET", "http://localhost:4000/sounds/test.wav", true)
+  request.open("GET", "/sounds/test.wav", true)
   request.responseType = "arraybuffer"
   request.onload = -> handler(request.response)
   request.send()
