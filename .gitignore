@@ -1,3 +1,4 @@
 public/javascripts/*.js
 public/javascripts/**/*.js
 !public/javascripts/require.js
+!public/javascripts/jquery.js
