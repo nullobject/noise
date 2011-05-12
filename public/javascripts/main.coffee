@@ -1,6 +1,8 @@
 require priority: ["jquery", "underscore"]
 
-require ["backbone", "jquery", "underscore"], ->
+require ["backbone", "jquery", "underscore", "application_view_controller"], (Backbone, JQuery, Underscore, ApplicationViewController) ->
+  applicationViewController = new ApplicationViewController
+
   buffer = null
 
   context = new webkitAudioContext
@@ -31,48 +33,9 @@ require ["backbone", "jquery", "underscore"], ->
   request.onload = -> handler(request.response)
   request.send()
 
-  class Trigger extends Backbone.Model
-    defaults:
-      selected: false
-
-    toggle: ->
-      this.set(selected: !this.get("selected"))
-
-  class TriggerView extends Backbone.View
-    tagName: "li"
-
-    events:
-      "click": "select"
-
-    initialize: ->
-      @model.bind("change", this.render)
-
-    render: =>
-      $(@el).toggleClass("selected", @model.get("selected"))
-
-    select: =>
-      @model.toggle()
-
-  class TriggerViewController
-    constructor: (@el) ->
-      _.extend(this, Backbone.Events)
-      @triggerViews = []
-
-    addTriggerView: (triggerView) ->
-      triggerView.render()
-      $(@el).append(triggerView.el)
-      @triggerViews.push(triggerView)
-
-  triggerViewController = new TriggerViewController("#triggers")
-  triggers = _([0..15]).map ->
-    trigger = new Trigger
-    triggerView = new TriggerView(model: trigger)
-    triggerViewController.addTriggerView(triggerView)
-    trigger
-
   index = 0
   playNextTrigger = ->
-    trigger = triggers[index]
+    trigger = applicationViewController.triggers[index]
     playNote() if trigger.get("selected")
     index++
     index = 0 if index >= 4
