@@ -1,4 +1,8 @@
 public/javascripts/*.js
 public/javascripts/**/*.js
-!public/javascripts/require.js
+!public/javascripts/backbone.js
 !public/javascripts/jquery.js
+!public/javascripts/require.js
+!public/javascripts/underscore.js
+public/stylesheets/*.css
+!public/javascripts/html5reset.css
