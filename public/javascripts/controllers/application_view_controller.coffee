@@ -1,19 +1,19 @@
-define ["sample_manager", "trigger", "trigger_view", "trigger_view_controller"], (SampleManager, Trigger, TriggerView, TriggerViewController) ->
+define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, GridViewController) ->
   class ApplicationViewController
     constructor: ->
-
       this._initAudio()
       this._initSampleManager()
-      this._initTriggers()
+      this._initGrid()
 
+    # TODO: should init the global gain level.
     _initAudio: ->
       @audioContext = new webkitAudioContext
 
       @delayNode = @audioContext.createDelayNode()
-      @delayNode.delayTime.value = 0.25
+      @delayNode.delayTime.value = 0.333
 
       @feedbackNode = @audioContext.createGainNode()
-      @feedbackNode.gain.value = 0.25
+      @feedbackNode.gain.value = 0.5
 
       @delayNode.connect(@audioContext.destination)
       @delayNode.connect(@feedbackNode)
@@ -32,13 +32,9 @@ define ["sample_manager", "trigger", "trigger_view", "trigger_view_controller"],
       $("#status").text("")
       this._start()
 
-    _initTriggers: ->
-      @triggerViewController = new TriggerViewController("#triggers")
-      @triggers = _([0..15]).map =>
-        trigger = new Trigger
-        triggerView = new TriggerView(model: trigger)
-        @triggerViewController.addTriggerView(triggerView)
-        trigger
+    _initGrid: ->
+      @gridViewController = new GridViewController("#container")
+      @pattern = @gridViewController.pattern
 
     _playSample: (name) ->
       source = @audioContext.createBufferSource()
@@ -50,10 +46,9 @@ define ["sample_manager", "trigger", "trigger_view", "trigger_view_controller"],
     _start: ->
       index = 0
 
-      playNextTrigger = =>
-        trigger = @triggers[index]
-        index++
-        index = 0 if index >= 4
-        this._playSample("kick") if trigger.get("selected")
+      playNextNote = =>
+        note = @pattern.getNote(index++)
+        index = 0 if index >= 16
+        this._playSample("kick") if note.get("selected")
 
-      setInterval(playNextTrigger, 500)
+      setInterval(playNextNote, 500)

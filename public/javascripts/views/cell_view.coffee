@@ -1,5 +1,7 @@
 define ->
-  class TriggerView extends Backbone.View
+  # Represents a cell in a grid which can be toggled on and off. A CellView
+  # is backed by a Note model.
+  class CellView extends Backbone.View
     tagName: "li"
 
     events:

@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="/stylesheets/html5reset.css" />
     <link rel="stylesheet" href="/stylesheets/main.css" />
 
-    <script data-main="javascripts/main" src="javascripts/require.js"></script>
+    <script type="text/javascript" src="http://use.typekit.com/egt3wov.js"></script>
+    <script type="text/javascript">try { Typekit.load(); } catch(e) {}</script>
+    <script data-main="javascripts/main" src="/javascripts/vendor/require.js"></script>
   </head>
 
   <body>
+    <header>
+      <h1>NOISE</h1>
+    </header>
+
     <div id="container">
-      <ul id="triggers"></ul>
+      <!-- TODO: move to a splash view. -->
       <p id="status"></p>
     </div>
   </body>

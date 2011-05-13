@@ -1,4 +1,4 @@
-require priority: ["jquery", "underscore"]
+require priority: ["vendor/jquery", "vendor/underscore"]
 
-require ["backbone", "jquery", "underscore", "application_view_controller"], (Backbone, JQuery, Underscore, ApplicationViewController) ->
+require ["vendor/backbone", "vendor/jquery", "vendor/underscore", "controllers/application_view_controller"], (Backbone, JQuery, Underscore, ApplicationViewController) ->
   applicationViewController = new ApplicationViewController
