@@ -1,26 +1,14 @@
 define ["sample_manager", "trigger", "trigger_view", "trigger_view_controller"], (SampleManager, Trigger, TriggerView, TriggerViewController) ->
   class ApplicationViewController
     constructor: ->
-      @audioContext = new webkitAudioContext
 
+      this._initAudio()
       this._initSampleManager()
       this._initTriggers()
-      this._initAudioRouting()
-      this._start()
 
-    _initSampleManager: ->
-      @sampleManager = new SampleManager(@audioContext)
-      @sampleManager.loadSamples(kick: "/sounds/test.wav")
+    _initAudio: ->
+      @audioContext = new webkitAudioContext
 
-    _initTriggers: ->
-      @triggerViewController = new TriggerViewController("#triggers")
-      @triggers = _([0..15]).map =>
-        trigger = new Trigger
-        triggerView = new TriggerView(model: trigger)
-        @triggerViewController.addTriggerView(triggerView)
-        trigger
-
-    _initAudioRouting: ->
       @delayNode = @audioContext.createDelayNode()
       @delayNode.delayTime.value = 0.25
 
@@ -30,6 +18,27 @@ define ["sample_manager", "trigger", "trigger_view", "trigger_view_controller"],
       @delayNode.connect(@audioContext.destination)
       @delayNode.connect(@feedbackNode)
       @feedbackNode.connect(@delayNode)
+
+    _initSampleManager: ->
+      @sampleManager = new SampleManager(@audioContext)
+      @sampleManager.bind("sample:loaded", this._onSampleLoaded)
+      @sampleManager.bind("all:loaded", this._onAllLoaded)
+      @sampleManager.loadSamples(kick: "/samples/test.wav")
+
+    _onSampleLoaded: (name, data) =>
+      $("#status").text(name + " loaded...")
+
+    _onAllLoaded: =>
+      $("#status").text("")
+      this._start()
+
+    _initTriggers: ->
+      @triggerViewController = new TriggerViewController("#triggers")
+      @triggers = _([0..15]).map =>
+        trigger = new Trigger
+        triggerView = new TriggerView(model: trigger)
+        @triggerViewController.addTriggerView(triggerView)
+        trigger
 
     _playSample: (name) ->
       source = @audioContext.createBufferSource()
@@ -43,8 +52,8 @@ define ["sample_manager", "trigger", "trigger_view", "trigger_view_controller"],
 
       playNextTrigger = =>
         trigger = @triggers[index]
-        this._playSample("kick") if trigger.get("selected")
         index++
         index = 0 if index >= 4
+        this._playSample("kick") if trigger.get("selected")
 
       setInterval(playNextTrigger, 500)
