@@ -5,15 +5,26 @@ define ->
   #   sampleManager = new SampleManager(kick: "/sounds/kick.wav", snare: "/sounds/snare.wav")
   #   data = sampleManager.get("kick")
   class SampleManager
-    constructor: (@map) ->
+    constructor: (@context) ->
       _.extend(this, Backbone.Events)
+      @samples = {}
 
-    loadSample: (url) ->
+    get: (name) ->
+      @samples[name]
+
+    loadSamples: (map) ->
+      for name, url of map
+        this.loadSample(name, url)
+
+    loadSample: (name, url) ->
+      @samples[name] = null
       request = new XMLHttpRequest()
-      request.open("GET", "/sounds/test.wav", true)
+      request.open("GET", url, true)
       request.responseType = "arraybuffer"
-      request.onload = -> handler(request.response)
+      request.onload = => this._onLoaded(name, request.response)
       request.send()
 
-    _onLoaded: (data) =>
-
+    _onLoaded: (name, data) =>
+      buffer = @context.createBuffer(data, false)
+      @samples[name] = buffer
+      this.trigger("loaded", name, buffer)
