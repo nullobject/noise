@@ -1,5 +1,9 @@
 define ["models/note", "models/pattern", "models/instrument", "models/kit", "sample_manager", "controllers/kit_view_controller", "controllers/grid_view_controller"], (Note, Pattern, Instrument, Kit, SampleManager, KitViewController, GridViewController) ->
   class ApplicationViewController
+    samples:
+      bass_drum:  "/samples/808/bd.wav"
+      snare_drum: "/samples/808/sd.wav"
+
     constructor: ->
       this._initAudio()
       this._initSampleManager()
@@ -23,13 +27,12 @@ define ["models/note", "models/pattern", "models/instrument", "models/kit", "sam
       @sampleManager = new SampleManager(@audioContext)
       @sampleManager.bind("sample:loaded", this._onSampleLoaded)
       @sampleManager.bind("all:loaded", this._onAllLoaded)
-      @sampleManager.loadSamples(bass_drum: "/samples/808/bd.wav", snare_drum: "/samples/808/sd.wav")
+      @sampleManager.loadSamples(@samples)
 
     _onSampleLoaded: (name, data) =>
-      $("#status").text(name + " loaded...")
+      console.log("loaded #{name}")
 
     _onAllLoaded: =>
-      $("#status").text("")
       this._start()
 
     _initKit: ->
@@ -116,8 +119,9 @@ define ["models/note", "models/pattern", "models/instrument", "models/kit", "sam
       instruments.push(instrument)
 
       @kit = new Kit(instruments)
-#       gridViewController = new GridViewController(pattern)
+
       kitViewController = new KitViewController(@kit)
+#       gridViewController = new GridViewController(pattern)
 
     _playNote: (sample, note) ->
       gain = note.get("gain")

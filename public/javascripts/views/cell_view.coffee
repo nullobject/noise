@@ -6,13 +6,18 @@ define ->
     className: "cell"
 
     events:
-      "mousedown": "_down"
-      "mouseup":   "_up"
-      "mousemove": "_move"
-      "mouseout":  "_out"
+      "mousedown": "_mouseDown"
+      "mouseup":   "_mouseUp"
+      "mousemove": "_mouseMove"
+      "mouseout":  "_mouseOut"
+
+    constructor: (options) ->
+      @readonly = options["readonly"]
+      super
 
     initialize: ->
       @model.bind("change", this.render)
+      this.delegateEvents({}) if @readonly
 
     render: =>
       el = $(@el)
@@ -40,16 +45,16 @@ define ->
     _calculateGain: (event) ->
       (@height - event.offsetY - 1) / (@height - 1)
 
-    _down: (event) =>
+    _mouseDown: (event) =>
       @model.toggle()
       @dragging = false
       @startGain = this._calculateGain(event)
 
-    _up: (event) =>
+    _mouseUp: (event) =>
       @startGain = null
       @dragging = false
 
-    _move: (event) =>
+    _mouseMove: (event) =>
       gain = this._calculateGain(event)
 
       if @dragging
@@ -59,6 +64,6 @@ define ->
         if Math.abs(gain - @startGain) >= this.DRAG_THRESHOLD
           @dragging = true
 
-    _out: (event) =>
+    _mouseOut: (event) =>
       @startGain = null
       @dragging = false

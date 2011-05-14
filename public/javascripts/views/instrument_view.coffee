@@ -3,6 +3,9 @@ define ["views/grid_view"], (GridView) ->
     tagName:   "li"
     className: "instrument"
 
+    events:
+      "mousedown": "_mouseDown"
+
     initialize: ->
       this._addPattern(@model.get("pattern"))
 
@@ -10,6 +13,9 @@ define ["views/grid_view"], (GridView) ->
       $(@el)
 
     _addPattern: (pattern) =>
-      gridView = new GridView(model: pattern)
+      gridView = new GridView(model: pattern, readonly: true)
       gridView.render()
       $(@el).append(gridView.el)
+
+    _mouseDown: (event) =>
+      # TODO: display grid view.
