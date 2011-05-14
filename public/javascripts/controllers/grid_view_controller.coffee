@@ -1,6 +1,6 @@
 define ["models/note", "models/pattern", "views/cell_view", "views/grid_view"], (Note, Pattern, CellView, GridView) ->
   class GridViewController
-    constructor: (@el) ->
+    constructor: (@sampleName) ->
       this._initGrid()
       this._renderGrid()
 
@@ -23,7 +23,7 @@ define ["models/note", "models/pattern", "views/cell_view", "views/grid_view"], 
 
     _renderGrid: ->
       @gridView.render()
-      $(@el).append(@gridView.el)
+      $("#container").append(@gridView.el)
       _(@cellViews).each (cellView) =>
         cellView.render()
         $(@gridView.el).append(cellView.el)
