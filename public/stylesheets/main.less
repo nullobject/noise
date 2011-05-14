@@ -90,6 +90,9 @@ ul.grid {
 
   padding: 5px;
 
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
   li {
     .cell(@cell-width, @cell-height, @cell-color);
 
@@ -101,7 +104,22 @@ ul.grid {
       .inset-box-shadow(0, 0, 15px, white);
     }
 
-    &.selected {
+    &.gain-25 {
+      @color: #f00;
+      .gradient(lighten(@color, 5%), darken(@color, 5%));
+    }
+
+    &.gain-50 {
+      @color: #0f0;
+      .gradient(lighten(@color, 5%), darken(@color, 5%));
+    }
+
+    &.gain-75 {
+      @color: #00f;
+      .gradient(lighten(@color, 5%), darken(@color, 5%));
+    }
+
+    &.gain-100 {
       @color: #f78e27;
       .gradient(lighten(@color, 5%), darken(@color, 5%));
     }
