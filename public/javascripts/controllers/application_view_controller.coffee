@@ -1,9 +1,9 @@
-define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, GridViewController) ->
+define ["models/note", "models/pattern", "models/instrument", "models/kit", "sample_manager", "controllers/kit_view_controller", "controllers/grid_view_controller"], (Note, Pattern, Instrument, Kit, SampleManager, KitViewController, GridViewController) ->
   class ApplicationViewController
     constructor: ->
       this._initAudio()
       this._initSampleManager()
-      this._initGrid()
+      this._initKit()
 
     # TODO: should init the global gain level.
     _initAudio: ->
@@ -32,19 +32,101 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
       $("#status").text("")
       this._start()
 
-    _initGrid: ->
-      @gridViewControllers = []
-      @gridViewControllers.push(new GridViewController("bass_drum"))
-      @gridViewControllers.push(new GridViewController("snare_drum"))
+    _initKit: ->
+      instruments = []
 
-    _playNote: (sampleName, note) ->
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "bass_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      notes = _([0..15]).map => new Note
+      pattern = new Pattern(notes)
+      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instruments.push(instrument)
+
+      @kit = new Kit(instruments)
+#       gridViewController = new GridViewController(pattern)
+      kitViewController = new KitViewController(@kit)
+
+    _playNote: (sample, note) ->
       gain = note.get("gain")
 
       # Don't play it if we can't hear it.
       return if gain == 0.0
 
       source            = @audioContext.createBufferSource()
-      source.buffer     = @sampleManager.get(sampleName)
+      source.buffer     = @sampleManager.get(sample)
       source.gain.value = Math.log(gain + 1) / Math.log(2)
 
       source.connect(@audioContext.destination)
@@ -58,10 +140,11 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
       @currentTime = @audioContext.currentTime
 
       playNextNote = =>
-        _(@gridViewControllers).each (gridViewController) =>
-          gridViewController.setActiveCell(index)
-          note = gridViewController.pattern.getNote(index)
-          this._playNote(gridViewController.sampleName, note)
+        _(@kit.models).each (instrument) =>
+          note   = instrument.get("pattern").models[index]
+          sample = instrument.get("sample")
+          note.set(active: true)
+          this._playNote(sample, note)
 
         index++
         index = 0 if index >= 16

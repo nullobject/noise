@@ -1,14 +1,16 @@
-define ->
-  # Represents a 4x4 grid of cells. A GridView is backed by a Pattern model.
+define ["views/cell_view"], (CellView) ->
   class GridView extends Backbone.View
-    tagName: "ul"
-
-    constructor: (options) ->
-      super
-      @controller = options["controller"]
+    tagName:   "ul"
+    className: "grid"
 
     initialize: ->
-      @model.bind("change", this.render)
+      @model.bind("add", this._addCell)
+      _(@model.models).each(this._addCell)
 
     render: =>
-      $(@el).addClass("grid")
+      $(@el)
+
+    _addCell: (cell) =>
+      cellView = new CellView(model: cell)
+      cellView.render()
+      $(@el).append(cellView.el)

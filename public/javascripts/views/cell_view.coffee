@@ -1,10 +1,9 @@
 define ->
-  # Represents a cell in a grid which can be toggled on and off. A CellView
-  # is backed by a Note model.
   class CellView extends Backbone.View
     DRAG_THRESHOLD: 0.25
 
-    tagName: "li"
+    tagName:   "li"
+    className: "cell"
 
     events:
       "mousedown": "_down"
@@ -12,17 +11,13 @@ define ->
       "mousemove": "_move"
       "mouseout":  "_out"
 
-    constructor: (options) ->
-      super
-      @gridView = options["gridView"]
-
     initialize: ->
       @model.bind("change", this.render)
 
     render: =>
       el = $(@el)
       @height = el.outerHeight()
-      el.toggleClass("active", @gridView.controller.isActiveCell(this))
+      el.toggleClass("active", @model.get("active"))
       el.removeClass("gain-0 gain-25 gain-50 gain-75 gain-100")
       el.addClass(this._getGainClass())
       el

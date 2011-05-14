@@ -1,9 +1,16 @@
-define ->
-  # A pattern represents a collection of 16 notes.
-  class Pattern extends Backbone.Model
-    defaults:
-      notes: Array(16)
+define ["models/note"], (Note) ->
+  # A pattern represents a collection of notes.
+  class Pattern extends Backbone.Collection
+    model: Note
 
-    # Returns the note at the given index.
-    getNote: (index) ->
-      this.get("notes")[index]
+    initialize: ->
+      this.bind("add", this._addNote)
+      _(@models).each(this._addNote)
+
+    _addNote: (note) =>
+      note.bind("change:active", this._noteActiveChanged)
+
+    _noteActiveChanged: (note) =>
+      return unless note.get("active")
+      @activeNote.set(active: false) if @activeNote
+      @activeNote = note
