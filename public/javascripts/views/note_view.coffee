@@ -1,9 +1,9 @@
 define ->
-  class CellView extends Backbone.View
+  class NoteView extends Backbone.View
     DRAG_THRESHOLD: 0.25
 
     tagName:   "li"
-    className: "cell"
+    className: "note"
 
     events:
       "mousedown": "_mouseDown"
@@ -41,7 +41,7 @@ define ->
       else
         "gain-0"
 
-    # Calculates the gain from the mouse Y offset within the cell.
+    # Calculates the gain from the mouse Y offset within the note.
     _calculateGain: (event) ->
       (@height - event.offsetY - 1) / (@height - 1)
 

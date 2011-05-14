@@ -75,7 +75,7 @@ h1 {
   font-size: 20px;
 }
 
-ul.grid {
+ul.pattern {
   li {
     &.gain-25 {
       @color: #f00;
@@ -137,7 +137,7 @@ ul.grid {
         .cell(@cell-width, @cell-height, white);
       }
 
-      > ul.grid {
+      > ul.pattern {
         overflow: hidden;
         list-style: none;
 
@@ -157,14 +157,14 @@ ul.grid {
           float: left;
 
           &.active {
-            border: 1px solid #ccc;
+            border: 1px solid #777;
           }
         }
       }
     }
   }
 
-  > ul.grid {
+  > ul.pattern {
     .border-radius(10px);
 
     background: black;

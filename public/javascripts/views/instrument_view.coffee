@@ -1,4 +1,4 @@
-define ["views/grid_view"], (GridView) ->
+define ["views/pattern_view"], (PatternView) ->
   class InstrumentView extends Backbone.View
     tagName:   "li"
     className: "instrument"
@@ -13,9 +13,9 @@ define ["views/grid_view"], (GridView) ->
       $(@el)
 
     _addPattern: (pattern) =>
-      gridView = new GridView(model: pattern, readonly: true)
-      gridView.render()
-      $(@el).append(gridView.el)
+      patternView = new PatternView(model: pattern, readonly: true)
+      patternView.render()
+      $(@el).append(patternView.el)
 
     _mouseDown: (event) =>
       # TODO: display grid view.

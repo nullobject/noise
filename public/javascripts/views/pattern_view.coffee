@@ -1,7 +1,7 @@
-define ["views/cell_view"], (CellView) ->
-  class GridView extends Backbone.View
+define ["views/note_view"], (NoteView) ->
+  class PatternView extends Backbone.View
     tagName:   "ul"
-    className: "grid"
+    className: "pattern"
 
     constructor: (options) ->
       @readonly = options["readonly"]
@@ -16,6 +16,6 @@ define ["views/cell_view"], (CellView) ->
       $(@el)
 
     _addCell: (cell) =>
-      cellView = new CellView(model: cell, readonly: @readonly)
-      cellView.render()
-      $(@el).append(cellView.el)
+      noteView = new NoteView(model: cell, readonly: @readonly)
+      noteView.render()
+      $(@el).append(noteView.el)

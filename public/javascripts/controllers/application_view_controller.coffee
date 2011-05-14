@@ -1,4 +1,4 @@
-define ["models/note", "models/pattern", "models/instrument", "models/kit", "sample_manager", "controllers/kit_view_controller", "controllers/grid_view_controller"], (Note, Pattern, Instrument, Kit, SampleManager, KitViewController, GridViewController) ->
+define ["sample_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/pattern_view_controller", "controllers/kit_view_controller"], (SampleManager, Note, Pattern, Instrument, Kit, PatternViewController, KitViewController) ->
   class ApplicationViewController
     samples:
       bass_drum:  "/samples/808/bd.wav"
@@ -121,7 +121,7 @@ define ["models/note", "models/pattern", "models/instrument", "models/kit", "sam
       @kit = new Kit(instruments)
 
       kitViewController = new KitViewController(@kit)
-#       gridViewController = new GridViewController(pattern)
+      patternViewController = new PatternViewController(pattern)
 
     _playNote: (sample, note) ->
       gain = note.get("gain")
