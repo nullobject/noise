@@ -3,6 +3,10 @@ define ->
   class GridView extends Backbone.View
     tagName: "ul"
 
+    constructor: (options) ->
+      super
+      @controller = options["controller"]
+
     initialize: ->
       @model.bind("change", this.render)
 

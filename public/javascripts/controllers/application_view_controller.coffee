@@ -33,8 +33,9 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
       this._start()
 
     _initGrid: ->
-      @gridViewController = new GridViewController("#container")
-      @pattern = @gridViewController.pattern
+      @gridViewControllers = []
+      @gridViewControllers.push(new GridViewController("#container"))
+      @gridViewControllers.push(new GridViewController("#container"))
 
     _playNote: (note) ->
       # TODO: get the sample name from the grid.
@@ -57,10 +58,12 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
       note = null
 
       playNextNote = =>
-        note.toggleActive() if note
-        note = @pattern.getNote(index++)
+        _(@gridViewControllers).each (gridViewController) =>
+          gridViewController.setActiveCell(index)
+          note = gridViewController.pattern.getNote(index)
+          this._playNote(note)
+
+        index++
         index = 0 if index >= 16
-        note.toggleActive()
-        this._playNote(note)
 
       setInterval(playNextNote, 450)

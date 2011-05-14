@@ -12,13 +12,17 @@ define ->
       "mousemove": "_move"
       "mouseout":  "_out"
 
+    constructor: (options) ->
+      super
+      @gridView = options["gridView"]
+
     initialize: ->
       @model.bind("change", this.render)
 
     render: =>
       el = $(@el)
       @height = el.outerHeight()
-      el.toggleClass("active", @model.get("active"))
+      el.toggleClass("active", @gridView.controller.isActiveCell(this))
       el.removeClass("gain-0 gain-25 gain-50 gain-75 gain-100")
       el.addClass(this._getGainClass())
       el
@@ -37,6 +41,7 @@ define ->
       else
         "gain-0"
 
+    # Calculates the gain from the mouse Y offset within the cell.
     _calculateGain: (event) ->
       (@height - event.offsetY - 1) / (@height - 1)
 
