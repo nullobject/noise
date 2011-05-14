@@ -11,7 +11,7 @@ define ->
       @model.bind("change", this.render)
 
     render: =>
-      $(@el).toggleClass("selected", @model.get("selected"))
+      $(@el).toggleClass("active", @model.get("active")).toggleClass("selected", @model.get("selected"))
 
     select: =>
-      @model.toggle()
+      @model.toggleSelected()

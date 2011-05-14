@@ -45,10 +45,13 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
 
     _start: ->
       index = 0
+      note = null
 
       playNextNote = =>
+        note.toggleActive() if note
         note = @pattern.getNote(index++)
-        index = 0 if index >= 16
+        note.toggleActive()
         this._playSample("kick") if note.get("selected")
+        index = 0 if index >= 16
 
-      setInterval(playNextNote, 500)
+      setInterval(playNextNote, 450)
