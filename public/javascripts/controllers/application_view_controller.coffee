@@ -46,7 +46,7 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
 
       source            = @audioContext.createBufferSource()
       source.buffer     = @sampleManager.get(name)
-      source.gain.value = gain
+      source.gain.value = Math.log(gain + 1) / Math.log(2)
 
       source.connect(@audioContext.destination)
       source.connect(@feedbackNode)
