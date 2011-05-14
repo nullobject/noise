@@ -36,9 +36,18 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
       @gridViewController = new GridViewController("#container")
       @pattern = @gridViewController.pattern
 
-    _playSample: (name) ->
-      source = @audioContext.createBufferSource()
-      source.buffer = @sampleManager.get(name)
+    _playNote: (note) ->
+      # TODO: get the sample name from the grid.
+      name = "kick"
+      gain = note.get("gain")
+
+      # Don't play it if we can't hear it.
+      return if gain == 0.0
+
+      source            = @audioContext.createBufferSource()
+      source.buffer     = @sampleManager.get(name)
+      source.gain.value = gain
+
       source.connect(@audioContext.destination)
       source.connect(@feedbackNode)
       source.noteOn(0)
@@ -50,8 +59,8 @@ define ["sample_manager", "controllers/grid_view_controller"], (SampleManager, G
       playNextNote = =>
         note.toggleActive() if note
         note = @pattern.getNote(index++)
-        note.toggleActive()
-        this._playSample("kick") if note.get("selected")
         index = 0 if index >= 16
+        note.toggleActive()
+        this._playNote(note)
 
       setInterval(playNextNote, 450)
