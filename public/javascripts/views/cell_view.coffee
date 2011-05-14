@@ -5,7 +5,7 @@ define ->
     tagName: "li"
 
     events:
-      "click": "select"
+      "mousedown": "select"
 
     initialize: ->
       @model.bind("change", this.render)

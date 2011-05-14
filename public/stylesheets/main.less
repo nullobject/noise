@@ -1,9 +1,15 @@
 @container-width:   400px;
 @container-height:  400px;
 
-@panel-width:       100px;
-@panel-height:      100px;
-@panel-color:       #eee;
+@cell-width:   100px;
+@cell-height:  100px;
+@cell-color:   #777;
+
+.border-radius(@radius: 4px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius:    @radius;
+  border-radius:         @radius;
+}
 
 .gradient(@start, @end) {
   background: @end;
@@ -12,12 +18,18 @@
   background: linear-gradient(top, @start 0%, @end 100%);
 }
 
-.box-shadow(@x: 0, @y: 0, @blur: 1px, @alpha) {
-  @val: @x @y @blur rgba(0, 0, 0, @alpha);
+.box-shadow(@x: 1px, @y: 1px, @blur: 10px, @color: rgba(0, 0, 0, 0.3)) {
+  @arguments: @x @y @blur @color;
+  -webkit-box-shadow: @arguments;
+  -moz-box-shadow:    @arguments;
+  box-shadow:         @arguments;
+}
 
-  -webkit-box-shadow: @val;
-  -moz-box-shadow:    @val;
-  box-shadow:         @val;
+.inset-box-shadow(@x: 1px, @y: 1px, @blur: 10px, @color: rgba(0, 0, 0, 0.3)) {
+  @arguments: @x @y @blur @color;
+  -webkit-box-shadow: inset @arguments;
+  -moz-box-shadow:    inset @arguments;
+  box-shadow:         inset @arguments;
 }
 
 .center(@width, @height) {
@@ -33,16 +45,15 @@
   margin-left: @width  / -2;
 }
 
-.panel(@width, @height, @color) {
-  .gradient(lighten(@color, 3%), darken(@color, 3%));
+.cell(@width, @height, @color) {
+  .border-radius(10px);
 
-  border-top: 1px solid lighten(@color, 10%);
-  border-left: 1px solid lighten(@color, 10%);
-  border-bottom: 1px solid darken(@color, 10%);
-  border-right: 1px solid darken(@color, 10%);
+  border: 2px solid @color;
 
-  width:  @width - 2;
-  height: @height - 2;
+  width:  @width - 10 - 4;
+  height: @height - 10 - 4;
+
+  margin: 5px;
 
   float: left;
 }
@@ -64,40 +75,39 @@ h1 {
 
 #container {
   .center(@container-width, @container-height);
-  .box-shadow(1px, 1px, 10px, 0.3);
+  .box-shadow;
 }
 
 ul.grid {
-  background: #aaa;
+  .border-radius(10px);
+
+  background: black;
   overflow: hidden;
   list-style: none;
 
   width:  100%;
   height: 100%;
 
+  padding: 5px;
+
   li {
-    .panel(@panel-width, @panel-height, @panel-color);
+    .cell(@cell-width, @cell-height, @cell-color);
 
     cursor: pointer;
 
-    &.selected {
-      @color: #cfc;
-      .gradient(lighten(@color, 3%), darken(@color, 3%));
+    -webkit-transition: box-shadow 0.1s ease-out;
+
+    &.active {
+      .inset-box-shadow(0, 0, 15px, white);
     }
 
-    &.selected:hover {
-      @color: #fcc;
-      .gradient(lighten(@color, 3%), darken(@color, 3%));
+    &.selected {
+      @color: #f78e27;
+      .gradient(lighten(@color, 5%), darken(@color, 5%));
     }
 
     &:hover {
-      @color: #cfc;
-      .gradient(lighten(@color, 3%), darken(@color, 3%));
-    }
-
-    &.active {
-      @color: #ccf;
-      .gradient(lighten(@color, 3%), darken(@color, 3%));
+      .cell(@cell-width, @cell-height, white);
     }
   }
 }
