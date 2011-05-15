@@ -1,8 +1,14 @@
 define ["sample_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/navigation_controller", "controllers/kit_view_controller"], (SampleManager, Note, Pattern, Instrument, Kit, NavigationController, KitViewController) ->
   class ApplicationViewController
     samples:
-      bass_drum:  "/samples/808/bd.wav"
-      snare_drum: "/samples/808/sd.wav"
+      bass_drum:    "/samples/808/bd.wav"
+      snare_drum:   "/samples/808/sd.wav"
+      closed_hihat: "/samples/808/ch.wav"
+      open_hihat:   "/samples/808/oh.wav"
+      clap:         "/samples/808/cp.wav"
+      clave:        "/samples/808/cl.wav"
+      cowbell:      "/samples/808/cb.wav"
+      rimshot:      "/samples/808/rs.wav"
 
     constructor: ->
       this._initAudio()
@@ -17,7 +23,7 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
       @delayNode.delayTime.value = 0.333
 
       @feedbackNode = @audioContext.createGainNode()
-      @feedbackNode.gain.value = 0.5
+      @feedbackNode.gain.value = 0.0
 
       @delayNode.connect(@audioContext.destination)
       @delayNode.connect(@feedbackNode)
@@ -50,32 +56,32 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sample: "closed_hihat")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sample: "open_hihat")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sample: "clap")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sample: "clave")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sample: "cowbell")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sample: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sample: "rimshot")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
