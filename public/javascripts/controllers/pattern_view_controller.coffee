@@ -1,8 +1,8 @@
-define ["views/pattern_view"], (PatternView) ->
-  class PatternViewController
-    constructor: (@pattern) ->
-      @view = new PatternView(model: @pattern)
-      this._render()
+define ["controllers/view_controller", "views/pattern_view"], (ViewController, PatternView) ->
+  class PatternViewController extends ViewController
+    constructor: (options) ->
+      @pattern = options["pattern"]
+      super(options)
 
-    _render: ->
-      @view.render()
+    loadView: ->
+      @view = new PatternView(model: @pattern)

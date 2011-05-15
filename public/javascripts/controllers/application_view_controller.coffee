@@ -126,8 +126,9 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
 
       @kit = new Kit(instruments)
 
-      kitViewController = new KitViewController(@kit)
-      navigationController = new NavigationController(kitViewController)
+      kitViewController    = new KitViewController(title: "Kit", kit: @kit)
+      navigationView       = new Backbone.View(el: $("#main"))
+      navigationController = new NavigationController(view: navigationView, rootViewController: kitViewController)
 
       $("#container header").bind("click", => navigationController.popViewController())
 

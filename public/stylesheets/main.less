@@ -106,89 +106,98 @@ ul.pattern {
   > header {
     background: black;
     color: white;
+
     width:  100%;
-    padding: 5px;
+    height: 30px;
+    line-height: 30px;
+
+    padding: 0 5px;
   }
 
-  > ul.kit {
-    //.border-radius(10px);
-
-    background: black;
-    overflow: hidden;
-    list-style: none;
-
+  #main {
     width:  100%;
     height: 100%;
 
-    padding: 5px;
+    > ul.kit {
+      //.border-radius(10px);
 
-    > li {
-      .cell(@cell-width, @cell-height, @cell-color);
+      background: black;
+      overflow: hidden;
+      list-style: none;
 
-      cursor: pointer;
+      width:  100%;
+      height: 100%;
 
-      -webkit-transition: box-shadow 0.1s ease-out;
+      padding: 5px;
 
-      &.active {
-        .inset-box-shadow(0, 0, 15px, white);
-      }
+      > li {
+        .cell(@cell-width, @cell-height, @cell-color);
 
-      &:hover {
-        .cell(@cell-width, @cell-height, white);
-      }
+        cursor: pointer;
 
-      > ul.pattern {
-        overflow: hidden;
-        list-style: none;
+        -webkit-transition: box-shadow 0.1s ease-out;
 
-        width:  100%;
-        height: 100%;
+        &.active {
+          .inset-box-shadow(0, 0, 15px, white);
+        }
 
-        padding: 2px;
+        &:hover {
+          .cell(@cell-width, @cell-height, white);
+        }
 
-        > li {
-          border: 1px solid @cell-color;
+        > ul.pattern {
+          overflow: hidden;
+          list-style: none;
 
-          width:  17px;
-          height: 17px;
+          width:  100%;
+          height: 100%;
 
-          margin: 1px;
+          padding: 2px;
 
-          float: left;
+          > li {
+            border: 1px solid @cell-color;
 
-          &.active {
-            border: 1px solid #777;
+            width:  17px;
+            height: 17px;
+
+            margin: 1px;
+
+            float: left;
+
+            &.active {
+              border: 1px solid #777;
+            }
           }
         }
       }
     }
-  }
 
-  > ul.pattern {
-    //.border-radius(10px);
+    > ul.pattern {
+      //.border-radius(10px);
 
-    background: black;
-    overflow: hidden;
-    list-style: none;
+      background: black;
+      overflow: hidden;
+      list-style: none;
 
-    width:  100%;
-    height: 100%;
+      width:  100%;
+      height: 100%;
 
-    padding: 5px;
+      padding: 5px;
 
-    > li {
-      .cell(@cell-width, @cell-height, @cell-color);
+      > li {
+        .cell(@cell-width, @cell-height, @cell-color);
 
-      cursor: pointer;
+        cursor: pointer;
 
-      -webkit-transition: box-shadow 0.1s ease-out;
+        -webkit-transition: box-shadow 0.1s ease-out;
 
-      &.active {
-        border: 2px solid #777;
-      }
+        &.active {
+          border: 2px solid #777;
+        }
 
-      &:hover {
-        border: 2px solid white;
+        &:hover {
+          border: 2px solid white;
+        }
       }
     }
   }
