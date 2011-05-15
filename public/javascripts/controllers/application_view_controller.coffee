@@ -1,4 +1,4 @@
-define ["sample_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/pattern_view_controller", "controllers/kit_view_controller"], (SampleManager, Note, Pattern, Instrument, Kit, PatternViewController, KitViewController) ->
+define ["sample_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/navigation_controller", "controllers/kit_view_controller"], (SampleManager, Note, Pattern, Instrument, Kit, NavigationController, KitViewController) ->
   class ApplicationViewController
     samples:
       bass_drum:  "/samples/808/bd.wav"
@@ -121,7 +121,9 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
       @kit = new Kit(instruments)
 
       kitViewController = new KitViewController(@kit)
-      patternViewController = new PatternViewController(pattern)
+      navigationController = new NavigationController(kitViewController)
+
+      $("#container header").bind("click", => navigationController.popViewController())
 
     _playNote: (sample, note) ->
       gain = note.get("gain")

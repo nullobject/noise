@@ -8,9 +8,9 @@ define ["models/note"], (Note) ->
       _(@models).each(this._addNote)
 
     _addNote: (note) =>
-      note.bind("change:active", this._noteActiveChanged)
+      note.bind("change:active", this._noteActivated)
 
-    _noteActiveChanged: (note) =>
+    _noteActivated: (note) =>
       return unless note.get("active")
       @activeNote.set(active: false) if @activeNote
       @activeNote = note

@@ -1,4 +1,6 @@
 define ->
+  # FIXME: the note view should not change the note model directly, it should
+  # notify the underlying view controller.
   class NoteView extends Backbone.View
     DRAG_THRESHOLD: 0.25
 

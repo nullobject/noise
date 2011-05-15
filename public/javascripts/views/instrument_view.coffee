@@ -1,4 +1,6 @@
 define ["views/pattern_view"], (PatternView) ->
+  # FIXME: the instrument view sould not change the instrument model directly,
+  # it should notify the underlying view controller.
   class InstrumentView extends Backbone.View
     tagName:   "li"
     className: "instrument"
@@ -18,4 +20,4 @@ define ["views/pattern_view"], (PatternView) ->
       $(@el).append(patternView.el)
 
     _mouseDown: (event) =>
-      # TODO: display grid view.
+      @model.set(selected: true)

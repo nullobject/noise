@@ -165,7 +165,7 @@ ul.pattern {
   }
 
   > ul.pattern {
-    .border-radius(10px);
+    //.border-radius(10px);
 
     background: black;
     overflow: hidden;
@@ -184,11 +184,11 @@ ul.pattern {
       -webkit-transition: box-shadow 0.1s ease-out;
 
       &.active {
-        .inset-box-shadow(0, 0, 15px, white);
+        border: 2px solid #777;
       }
 
       &:hover {
-        .cell(@cell-width, @cell-height, white);
+        border: 2px solid white;
       }
     }
   }
