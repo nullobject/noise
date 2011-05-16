@@ -23,11 +23,14 @@ define ->
 
     render: =>
       el = $(@el)
+
       @height = el.outerHeight()
+
       el.toggleClass("active", @model.get("active"))
       el.removeClass("gain-0 gain-25 gain-50 gain-75 gain-100")
       el.addClass(this._getGainClass())
-      el
+
+      this
 
     _getGainClass: ->
       gain = @model.get("gain")

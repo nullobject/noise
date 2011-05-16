@@ -12,9 +12,6 @@ define ["views/note_view"], (NoteView) ->
       _(@model.models).each(this._addNote)
       this.delegateEvents({}) if @readonly
 
-    render: =>
-      $(@el)
-
     _addNote: (note) =>
       noteView = new NoteView(model: note, readonly: @readonly)
       noteView.render()

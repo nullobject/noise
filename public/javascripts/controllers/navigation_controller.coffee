@@ -1,6 +1,33 @@
 define ["controllers/view_controller"], (ViewController) ->
   # Represents a view controller which manages hierarchical content.
   class NavigationController extends ViewController
+    class Button extends Backbone.View
+      tagName: "button"
+
+      events:
+        "click": "_click"
+
+      initialize: ->
+        @label = @options["label"]
+
+      render: ->
+        $(@el).text(@label || "")
+        this
+
+      _click: (event) =>
+        this.trigger("click")
+
+    class Label extends Backbone.View
+      tagName: "span"
+      className: "label"
+
+      initialize: ->
+        @label = @options["label"]
+
+      render: ->
+        $(@el).text(@label || "")
+        this
+
     class NavigationItem
       constructor: (options) ->
         @title = options["title"]
@@ -8,34 +35,44 @@ define ["controllers/view_controller"], (ViewController) ->
     class NavigationBar extends Backbone.View
       tagName: "nav"
 
-      template: _.template """
-        <% if (left) { %><span class="left"><%= left.title %></span><% } %>
-        <% if (middle) { %><span class="middle"><%= middle.title %></span><% } %>
-      """
+      initialize: ->
+        @navigationItems = []
 
-      constructor: (options) ->
-        @navigationItems    = []
         @topNavigationItem  = null
         @backNavigationItem = null
 
-        super(options)
+        @leftButton  = new Button(className: "left")
+        @titleView   = new Label
+#         @rightButton = new Button(className: "right")
 
       pushNavigationItem: (navigationItem) ->
         @backNavigationItem = _(@navigationItems).last()
         @navigationItems.push(navigationItem)
         @topNavigationItem = navigationItem
+        this._setButtonLabels()
         this.render()
 
       popNavigationItem: ->
         throw "can't pop root navigation item" unless @navigationItems.length > 1
         navigationItem = @navigationItems.pop()
         @topNavigationItem = _(@navigationItems).last()
-        @backNavigationItem = _(@navigationItems).slice(-2, -1)
+        @backNavigationItem = @navigationItems[@navigationItems.length - 2]
+        this._setButtonLabels()
         this.render()
         navigationItem
 
       render: ->
-        $(@el).html(@template(left: @backNavigationItem, middle: @topNavigationItem))
+        el = $(@el)
+
+        if @backNavigationItem? then el.append(@leftButton.render().el) else $(@leftButton.el).detach()
+        el.append(@titleView.render().el)
+#         if @rightButton.label then el.append(@rightButton.render().el) else $(@rightButton.el).detach()
+
+        this
+
+      _setButtonLabels: ->
+        @leftButton.label = "← " + @backNavigationItem?.title
+        @titleView.label = @topNavigationItem?.title
 
     # options:
     #   rootViewController: the top-level view controller in the stack.
@@ -46,13 +83,13 @@ define ["controllers/view_controller"], (ViewController) ->
       super(options)
 
       @navigationBar = new NavigationBar
-      @navigationBar.render()
-      (@view.el).append(@navigationBar.el)
+      @navigationBar.leftButton.bind("click", this.popViewController)
+      (@view.el).append(@navigationBar.render().el)
 
       rootViewController = options["rootViewController"]
       this.pushViewController(rootViewController) if rootViewController?
 
-    pushViewController: (viewController) ->
+    pushViewController: (viewController) =>
       this._swapViews(@topViewController?.view, viewController.view)
 
       @topViewController = viewController
@@ -63,7 +100,7 @@ define ["controllers/view_controller"], (ViewController) ->
       navigationItem = new NavigationItem(title: viewController.title)
       @navigationBar.pushNavigationItem(navigationItem)
 
-    popViewController: ->
+    popViewController: =>
       throw "can't pop root view controller" unless @viewControllers.length > 1
 
       @navigationBar.popNavigationItem()

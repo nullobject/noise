@@ -130,8 +130,6 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
       navigationView       = new Backbone.View(el: $("#main"))
       navigationController = new NavigationController(view: navigationView, rootViewController: kitViewController)
 
-      $("#container header").bind("click", => navigationController.popViewController())
-
     _playNote: (sample, note) ->
       gain = note.get("gain")
 

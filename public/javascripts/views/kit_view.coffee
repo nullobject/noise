@@ -7,9 +7,6 @@ define ["views/instrument_view"], (InstrumentView) ->
       @model.bind("add", this._addInstrument)
       _(@model.models).each(this._addInstrument)
 
-    render: =>
-      $(@el)
-
     _addInstrument: (instrument) =>
       instrumentView = new InstrumentView(model: instrument)
       instrumentView.render()
