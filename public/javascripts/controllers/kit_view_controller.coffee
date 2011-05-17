@@ -1,5 +1,5 @@
-define ["controllers/view_controller", "controllers/pattern_view_controller", "views/kit_view"], (ViewController, PatternViewController, KitView) ->
-  class KitViewController extends ViewController
+define ["controllers/pattern_view_controller", "views/kit_view"], (PatternViewController, KitView) ->
+  class KitViewController extends Spleen.ViewController
     constructor: (options) ->
       @kit = options["kit"]
       @kit.bind("change:selected", this._instrumentSelected)

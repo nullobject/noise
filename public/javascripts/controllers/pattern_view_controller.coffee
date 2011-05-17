@@ -1,5 +1,5 @@
-define ["controllers/view_controller", "views/pattern_view"], (ViewController, PatternView) ->
-  class PatternViewController extends ViewController
+define ["views/pattern_view"], (PatternView) ->
+  class PatternViewController extends Spleen.ViewController
     constructor: (options) ->
       @pattern = options["pattern"]
       super(options)

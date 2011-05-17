@@ -1,5 +1,5 @@
-define ["sample_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/navigation_controller", "controllers/kit_view_controller"], (SampleManager, Note, Pattern, Instrument, Kit, NavigationController, KitViewController) ->
-  class ApplicationViewController
+define ["sample_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/kit_view_controller"], (SampleManager, Note, Pattern, Instrument, Kit, KitViewController) ->
+  class Application
     samples:
       bass_drum:    "/samples/808/bd.wav"
       snare_drum:   "/samples/808/sd.wav"
@@ -128,7 +128,7 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
 
       kitViewController    = new KitViewController(title: "Kit", kit: @kit)
       navigationView       = new Backbone.View(el: $("#main"))
-      navigationController = new NavigationController(view: navigationView, rootViewController: kitViewController)
+      navigationController = new Spleen.NavigationController(view: navigationView, rootViewController: kitViewController)
 
     _playNote: (sample, note) ->
       gain = note.get("gain")
