@@ -126,7 +126,13 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
 
       @kit = new Kit(instruments)
 
-      kitViewController    = new KitViewController(title: "Kit", kit: @kit)
+      kitViewController = new KitViewController(title: "Kit", kit: @kit)
+
+      editButton = new Spleen.Button(title: "Edit", className: "right")
+      editButton.bind("click", -> alert "hi")
+
+      kitViewController.navigationItem.rightButton = editButton
+
       navigationView       = new Backbone.View(el: $("#main"))
       navigationController = new Spleen.NavigationController(view: navigationView, rootViewController: kitViewController)
 

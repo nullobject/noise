@@ -1,5 +1,6 @@
 public/javascripts/*.js
 public/javascripts/**/*.js
 !public/javascripts/vendor/*.js
+public/javascripts/vendor/spleen.js
 public/stylesheets/*.css
 !public/javascripts/html5reset.css

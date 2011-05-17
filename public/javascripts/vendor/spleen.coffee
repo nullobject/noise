@@ -16,6 +16,8 @@ Spleen.ViewController =
       @title = options["title"]
       @view  = options["view"]
 
+      @navigationItem = new Spleen.NavigationItem(title: @title)
+
       this.loadView() unless @view?
       @view.render() if @view?
 
@@ -31,10 +33,10 @@ Spleen.Button =
       "click": "_click"
 
     initialize: ->
-      @label = @options["label"]
+      @title = @options["title"]
 
     render: ->
-      $(@el).text(@label || "")
+      $(@el).text(@title || "")
       this
 
     _click: (event) =>
@@ -52,11 +54,6 @@ Spleen.Label =
       $(@el).text(@label || "")
       this
 
-Spleen.NavigationItem =
-  class
-    constructor: (options) ->
-      @title = options["title"]
-
 Spleen.NavigationBar =
   class extends Backbone.View
     tagName: "nav"
@@ -69,7 +66,6 @@ Spleen.NavigationBar =
 
       @leftButton  = new Spleen.Button(className: "left")
       @titleView   = new Spleen.Label(className: "title")
-      @rightButton = new Spleen.Button(className: "right")
 
     pushNavigationItem: (navigationItem) ->
       @backNavigationItem = _(@navigationItems).last()
@@ -90,14 +86,22 @@ Spleen.NavigationBar =
     render: ->
       el = $(@el)
 
-      if @backNavigationItem? then el.append(@leftButton.render().el) else $(@leftButton.el).detach()
+      if @backNavigationItem?
+        el.append(@leftButton.render().el)
+      else
+        $(@leftButton.el).detach()
+
       el.append(@titleView.render().el)
-      if @rightButton.label then el.append(@rightButton.render().el) else $(@rightButton.el).detach()
+
+      if @topNavigationItem?.rightButton?
+        el.append(@topNavigationItem.rightButton.render().el)
+      else if @backNavigationItem?.rightButton?
+        $(@backNavigationItem.rightButton.el).detach()
 
       this
 
     _setButtonLabels: ->
-      @leftButton.label = "← " + @backNavigationItem?.title
+      @leftButton.title = "← " + @backNavigationItem?.title
       @titleView.label = @topNavigationItem?.title
 
 # Represents a view controller which manages hierarchical content.
@@ -126,8 +130,7 @@ Spleen.NavigationController =
       viewController.navigationController = this
       @viewControllers.push(viewController)
 
-      navigationItem = new Spleen.NavigationItem(title: viewController.title)
-      @navigationBar.pushNavigationItem(navigationItem)
+      @navigationBar.pushNavigationItem(viewController.navigationItem)
 
     popViewController: =>
       throw "Can't pop the root view controller" unless @viewControllers.length > 1
@@ -146,3 +149,11 @@ Spleen.NavigationController =
     _swapViews: (from, to) ->
       $(@view.el).append(to.el) if to?
       $(from.el).detach() if from?
+
+Spleen.NavigationItem =
+  class
+    constructor: (options) ->
+      @leftButton  = null
+      @rightButton = null
+
+      @title = options["title"]
