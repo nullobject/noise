@@ -1,5 +1,5 @@
-@container-width:   408px;
-@container-height:  408px;
+@container-width:   418px;
+@container-height:  498px;
 
 @cell-width:   102px;
 @cell-height:  102px;
@@ -12,10 +12,15 @@
 }
 
 .gradient(@start, @end) {
-  background: @end;
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, @start), color-stop(100%, @end));
-  background: -moz-linear-gradient(top, @start 0%, @end 100%);
-  background: linear-gradient(top, @start 0%, @end 100%);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, @start), color-stop(100%, @end));
+  background-image: -moz-linear-gradient(top, @start 0%, @end 100%);
+  background-image: linear-gradient(top, @start 0%, @end 100%);
+}
+
+.gradient2(@starta, @enda, @startb, @endb) {
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, @starta), color-stop(50%, @enda), color-stop(50%, @startb), color-stop(100%, @endb));
+  background-image: -moz-linear-gradient(top, @starta 0%, @enda 50%, @starta 50%, @enda 100%);
+  background-image: linear-gradient(top, @starta 0%, @enda 50%, @startb 50%, @endb 100%);
 }
 
 .box-shadow(@x: 1px, @y: 1px, @blur: 10px, @color: rgba(0, 0, 0, 0.3)) {
@@ -34,6 +39,7 @@
 
 .center(@width, @height) {
   position: absolute;
+  overflow: hidden;
 
   height: @height;
   width:  @width;
@@ -45,9 +51,11 @@
   margin-left: @width  / -2;
 }
 
-.cell(@width, @height, @color) {
-  //.border-radius(4px);
+.border-box {
+  -webkit-box-sizing: border-box;
+}
 
+.cell(@width, @height, @color) {
   border: 2px solid @color;
 
   width:  @width - 10 - 4;
@@ -59,7 +67,7 @@
 }
 
 body {
-  background: #1c1c1c url(/images/background.png);
+  background-color: black;
   color: #222;
   font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   font-size: 14px;
@@ -99,12 +107,54 @@ ul.pattern {
   }
 }
 
+button {
+  .border-box;
+  .border-radius;
+
+  background: transparent;
+  border: 1px solid silver;
+  padding: 2px;
+
+  &:before {
+    content: " ";
+    display: block;
+
+    width: 26px;
+    height: 26px;
+
+    background-color: silver;
+
+    -webkit-mask-size: 16px 16px;
+    -webkit-mask-position: center center;
+    -webkit-mask-repeat: no-repeat;
+  }
+
+  &:hover {
+    border: 1px solid white;
+  }
+
+  &:hover:before {
+    background: -webkit-gradient(linear, 38% 0%, 60% 70%, from(#dde9f0), to(#3fc5f8), color-stop(0.6, #79b2ec), color-stop(0.7, #2e91e5));
+  }
+}
+
+button.settings:before {
+  -webkit-mask-image: url("/images/icons/19-gear@2x.png");
+}
+
+button.back:before {
+  -webkit-mask-image: url("/images/icons/05-arrow-west@2x.png");
+}
+
 #container {
   .center(@container-width, @container-height);
-  .box-shadow;
+  //.box-shadow;
+
+  .border-radius;
+  border: 1px solid silver;
+  background-color: #222;
 
   > header {
-    background: black;
     color: white;
 
     width:  100%;
@@ -119,10 +169,20 @@ ul.pattern {
     height: 100%;
 
     > nav {
-      background: black;
-      color: white;
+      .border-box;
+      .gradient2(#464646, #404040, #393939, #2b2b2b);
 
-      //padding: 5px;
+      border-top: 1px solid #6a6a6a;
+      border-bottom: 1px solid #383838;
+
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 40px;
+      text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+
+      padding: 5px;
+      height: 50px;
 
       text-align: center;
 
@@ -136,27 +196,18 @@ ul.pattern {
     }
 
     > ul.kit {
-      //.border-radius(10px);
-
-      background: black;
       overflow: hidden;
       list-style: none;
 
       width:  100%;
       height: 100%;
 
-      //padding: 5px;
+      padding: 5px;
 
       > li {
         .cell(@cell-width, @cell-height, @cell-color);
 
         cursor: pointer;
-
-        -webkit-transition: box-shadow 0.1s ease-out;
-
-        &.active {
-          .inset-box-shadow(0, 0, 15px, white);
-        }
 
         &:hover {
           .cell(@cell-width, @cell-height, white);
@@ -190,16 +241,13 @@ ul.pattern {
     }
 
     > ul.pattern {
-      //.border-radius(10px);
-
-      background: black;
       overflow: hidden;
       list-style: none;
 
       width:  100%;
       height: 100%;
 
-      //padding: 5px;
+      padding: 5px;
 
       > li {
         .cell(@cell-width, @cell-height, @cell-color);

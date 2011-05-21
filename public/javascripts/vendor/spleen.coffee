@@ -64,8 +64,8 @@ Spleen.NavigationBar =
       @topNavigationItem  = null
       @backNavigationItem = null
 
-      @leftButton  = new Spleen.Button(className: "left")
-      @titleView   = new Spleen.Label(className: "title")
+      @leftButton = new Spleen.Button(className: "left back")
+      @titleView  = new Spleen.Label(className: "title")
 
     pushNavigationItem: (navigationItem) ->
       @backNavigationItem = _(@navigationItems).last()
@@ -94,6 +94,7 @@ Spleen.NavigationBar =
       el.append(@titleView.render().el)
 
       if @topNavigationItem?.rightButton?
+        $(@topNavigationItem.rightButton.el).addClass("right")
         el.append(@topNavigationItem.rightButton.render().el)
       else if @backNavigationItem?.rightButton?
         $(@backNavigationItem.rightButton.el).detach()
@@ -101,7 +102,7 @@ Spleen.NavigationBar =
       this
 
     _setButtonLabels: ->
-      @leftButton.title = "← " + @backNavigationItem?.title
+      #@leftButton.title = "← " + @backNavigationItem?.title
       @titleView.label = @topNavigationItem?.title
 
 # Represents a view controller which manages hierarchical content.

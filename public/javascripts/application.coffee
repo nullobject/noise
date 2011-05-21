@@ -128,8 +128,8 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
 
       kitViewController = new KitViewController(title: "Kit", kit: @kit)
 
-      editButton = new Spleen.Button(title: "Edit", className: "right")
-      editButton.bind("click", -> alert "hi")
+      editButton = new Spleen.Button(className: "settings")
+      editButton.bind("click", -> alert "TODO: kit settings")
 
       kitViewController.navigationItem.rightButton = editButton
 
