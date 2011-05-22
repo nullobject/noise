@@ -1,6 +1,6 @@
 define ->
   class TableCellView extends Backbone.View
-    tagName: "li"
+    tagName: "option"
 
     events:
       "click": "_click"

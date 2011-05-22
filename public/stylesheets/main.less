@@ -108,21 +108,24 @@ ul.pattern {
 }
 
 button {
-  .border-box;
   .border-radius;
 
   background: transparent;
   border: 1px solid silver;
-  padding: 2px;
+  padding: 0;
+
+  width: 32px;
+  height: 32px;
 
   &:before {
     content: " ";
-    display: block;
-
-    width: 26px;
-    height: 26px;
+    display: inline-block;
 
     background-color: silver;
+    padding: 6px;
+
+    width: 16px;
+    height: 16px;
 
     -webkit-mask-size: 16px 16px;
     -webkit-mask-position: center center;

@@ -1,6 +1,6 @@
 define ["views/scroll_view", "views/table_cell_view"], (ScrollView, TableCellView) ->
   class TableView extends ScrollView
-    tagName:   "ul"
+    tagName:   "select"
     className: "table"
 
     initialize: ->
