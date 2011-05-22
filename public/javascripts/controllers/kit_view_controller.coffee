@@ -21,4 +21,4 @@ define ["controllers/instrument_view_controller", "views/kit_view"], (Instrument
 
     _openInstrument: (instrument) ->
       instrumentViewController = new InstrumentViewController(instrument: instrument)
-      this.navigationController.pushViewController(instrumentViewController)
+      @navigationController.pushViewController(instrumentViewController)

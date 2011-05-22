@@ -184,14 +184,22 @@ button.back:before {
       padding: 5px;
       height: 50px;
 
-      text-align: center;
+      display: -webkit-box;
+      -webkit-box-orient: horizontal;
 
       .left {
-        float: left;
+        text-align: left;
+        width: 25%;
+      }
+
+      .center {
+        text-align: center;
+        -webkit-box-flex: 1;
       }
 
       .right {
-        float: right;
+        text-align: right;
+        width: 25%;
       }
     }
 

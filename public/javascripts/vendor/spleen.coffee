@@ -64,11 +64,19 @@ Spleen.NavigationBar =
       @topItem  = null
       @backItem = null
 
-      @_defaultTitleView = new Spleen.Label(className: "title")
-      @_defaultLeftButton = new Spleen.Button(className: "left back")
+      @_defaultTitleView  = new Spleen.Label(className: "title")
+      @_defaultLeftButton = new Spleen.Button(className: "back")
 
-      @titleView   = @_defaultTitleView
+      @_defaultLeftButton.bind("click", => this.trigger("pop", @topItem))
+
+      @_leftContainer   = $(document.createElement("div")).addClass("left")
+      @_centerContainer = $(document.createElement("div")).addClass("center")
+      @_rightContainer  = $(document.createElement("div")).addClass("right")
+
+      $(@el).append(@_leftContainer, @_centerContainer, @_rightContainer)
+
       @leftButton  = @_defaultLeftButton
+      @titleView   = @_defaultTitleView
       @rightButton = null
 
     pushNavigationItem: (item) ->
@@ -90,45 +98,43 @@ Spleen.NavigationBar =
       this._updateLeftButton()
       this._updateRightButton()
 
-      @titleView.render()   if @titleView
       @leftButton.render()  if @leftButton
+      @titleView.render()   if @titleView
       @rightButton.render() if @rightButton
 
       this
 
+    _updateLeftButton: ->
+      $(@leftButton.el).detach() if @leftButton
+
+      @leftButton = @topItem?.leftButton
+
+      if !@leftButton && @backItem?
+        @leftButton = @_defaultLeftButton
+#         @leftButton.title = @backItem.title
+
+      if @leftButton
+        $(@_leftContainer).append(@leftButton.el)
+
     _updateTitleView: ->
       $(@titleView.el).detach() if @titleView
 
-      @titleView = @topItem.titleView
+      @titleView = @topItem?.titleView
 
       if !@titleView && @topItem
         @titleView = @_defaultTitleView
         @titleView.label = @topItem.title
 
       if @titleView
-        $(@el).append(@titleView.el)
-
-    _updateLeftButton: ->
-      $(@leftButton.el).detach() if @leftButton
-
-      @leftButton = @topItem.leftButton
-
-      if !@leftButton && @backItem
-        @leftButton = @_defaultLeftButton
-#         @leftButton.title = @backItem.title
-
-      if @leftButton
-        @leftButton.bind("click", => this.trigger("pop", @topItem))
-        $(@el).append(@leftButton.el)
+        $(@_centerContainer).append(@titleView.el)
 
     _updateRightButton: ->
       $(@rightButton.el).detach() if @rightButton
 
-      @rightButton = @topItem.rightButton
+      @rightButton = @topItem?.rightButton
 
-      if @rightButton?
-        $(@el).append(@rightButton.el)
-        $(@rightButton.el).addClass("right")
+      if @rightButton
+        $(@_rightContainer).append(@rightButton.el)
 
 # Represents a view controller which manages hierarchical content.
 Spleen.NavigationController =
@@ -143,12 +149,10 @@ Spleen.NavigationController =
 
       @navigationBar = new Spleen.NavigationBar
       @navigationBar.bind("pop", this.popViewController)
-      (@view.el).append(@navigationBar.el)
+      (@view.el).append(@navigationBar.render().el)
 
       rootViewController = options["rootViewController"]
       this.pushViewController(rootViewController) if rootViewController?
-
-      @navigationBar.render()
 
     pushViewController: (viewController) =>
       this._swapViews(@topViewController?.view, viewController.view)
