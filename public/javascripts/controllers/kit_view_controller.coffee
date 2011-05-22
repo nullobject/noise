@@ -3,7 +3,12 @@ define ["controllers/pattern_view_controller", "views/kit_view"], (PatternViewCo
     constructor: (options) ->
       @kit = options["kit"]
       @kit.bind("change:selected", this._instrumentSelected)
+
       super(options)
+
+      settingsButton = new Spleen.Button(className: "settings")
+      settingsButton.bind("click", -> alert "TODO: kit settings")
+      @navigationItem.rightButton = settingsButton
 
     loadView: ->
       @view = new KitView(model: @kit)

@@ -126,15 +126,9 @@ define ["sample_manager", "models/note", "models/pattern", "models/instrument", 
 
       @kit = new Kit(instruments)
 
-      kitViewController = new KitViewController(title: "Kit", kit: @kit)
-
-      editButton = new Spleen.Button(className: "settings")
-      editButton.bind("click", -> alert "TODO: kit settings")
-
-      kitViewController.navigationItem.rightButton = editButton
-
+      kitViewController    = new KitViewController(title: "Kit", kit: @kit)
       navigationView       = new Backbone.View(el: $("#main"))
-      navigationController = new Spleen.NavigationController(view: navigationView, rootViewController: kitViewController)
+      navigationController = new Spleen.NavigationController(rootViewController: kitViewController, view: navigationView)
 
     _playNote: (sample, note) ->
       gain = note.get("gain")
