@@ -11,3 +11,5 @@ define ->
         this.set(gain: 0.0)
       else
         this.set(gain: 1.0)
+
+    toString: -> "fooz"
