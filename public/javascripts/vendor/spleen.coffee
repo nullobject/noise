@@ -65,10 +65,10 @@ Spleen.NavigationBar =
       @backItem = null
 
       @_defaultTitleView = new Spleen.Label(className: "title")
-      @_defautLeftButton = new Spleen.Button(className: "left back")
+      @_defaultLeftButton = new Spleen.Button(className: "left back")
 
       @titleView   = @_defaultTitleView
-      @leftButton  = @_defautLeftButton
+      @leftButton  = @_defaultLeftButton
       @rightButton = null
 
     pushNavigationItem: (item) ->
@@ -97,7 +97,16 @@ Spleen.NavigationBar =
       this
 
     _updateTitleView: ->
-      @titleView.label = @topItem?.title
+      $(@titleView.el).detach() if @titleView
+
+      @titleView = @topItem.titleView
+
+      if !@titleView && @topItem
+        @titleView = @_defaultTitleView
+        @titleView.label = @topItem.title
+
+      if @titleView
+        $(@el).append(@titleView.el)
 
     _updateLeftButton: ->
       $(@leftButton.el).detach() if @leftButton
@@ -105,8 +114,8 @@ Spleen.NavigationBar =
       @leftButton = @topItem.leftButton
 
       if !@leftButton && @backItem
-        @leftButton = @_defautLeftButton
-        @leftButton.title = @backItem.title
+        @leftButton = @_defaultLeftButton
+#         @leftButton.title = @backItem.title
 
       if @leftButton
         @leftButton.bind("click", => this.trigger("pop", @topItem))

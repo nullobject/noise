@@ -1,10 +1,12 @@
-define ["controllers/pattern_view_controller", "views/kit_view"], (PatternViewController, KitView) ->
+define ["controllers/instrument_view_controller", "views/kit_view"], (InstrumentViewController, KitView) ->
   class KitViewController extends Spleen.ViewController
     constructor: (options) ->
       @kit = options["kit"]
-      @kit.bind("change:selected", this._instrumentSelected)
+      options["title"] = "Kit"
 
       super(options)
+
+      @kit.bind("change:selected", this._instrumentSelected)
 
       settingsButton = new Spleen.Button(className: "settings")
       settingsButton.bind("click", -> alert "TODO: kit settings")
@@ -18,5 +20,5 @@ define ["controllers/pattern_view_controller", "views/kit_view"], (PatternViewCo
       this._openInstrument(instrument)
 
     _openInstrument: (instrument) ->
-      patternViewController = new PatternViewController(title: instrument.get("sample"), pattern: instrument.get("pattern"))
-      this.navigationController.pushViewController(patternViewController)
+      instrumentViewController = new InstrumentViewController(instrument: instrument)
+      this.navigationController.pushViewController(instrumentViewController)
