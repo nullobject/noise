@@ -30,13 +30,17 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
       @feedbackNode.connect(@delayNode)
 
     _initSoundManager: ->
-      @soundManager = new SoundManager(@audioContext)
-      @soundManager.bind("sound:loaded", this._onSoundLoaded)
+      @soundManager = new SoundManager(audioContext: @audioContext)
+
+      # FIXME: ugly hack.
+      window.soundManager = @soundManager
+
+      @soundManager.bind("add", this._onSoundLoaded)
       @soundManager.bind("all:loaded", this._onAllLoaded)
       @soundManager.loadSounds(@sounds)
 
-    _onSoundLoaded: (name, data) =>
-      console.log("loaded #{name}")
+    _onSoundLoaded: (sound) =>
+      console.log("loaded #{sound.id}")
 
     _onAllLoaded: =>
       this._start()
@@ -153,7 +157,7 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
 
       playNextNote = =>
         _(@kit.models).each (instrument) =>
-          note   = instrument.get("pattern").models[index]
+          note  = instrument.get("pattern").models[index]
           sound = instrument.get("sound")
           note.set(active: true)
           this._playNote(sound, note)

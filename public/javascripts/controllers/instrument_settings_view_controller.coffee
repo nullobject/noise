@@ -7,5 +7,5 @@ define ["views/table_view"], (TableView) ->
       super(options)
 
     loadView: ->
-      @view = new TableView(collection: @instrument.get("pattern"))
+      @view = new TableView(collection: window.soundManager)
 #       @view.bind("select", (row) -> console.log row)
