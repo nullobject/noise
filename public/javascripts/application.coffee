@@ -136,7 +136,7 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
 
     _playNote: (sound, note) ->
       sound = @soundManager.get(sound)
-      gain   = note.get("gain")
+      gain  = note.get("gain")
 
       # Don't play it if we can't hear it.
       return if gain == 0.0

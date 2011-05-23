@@ -1,4 +1,4 @@
-define ["views/table_view"], (TableView) ->
+define ["views/select_view"], (SelectView) ->
   class InstrumentSettingsViewController extends Spleen.ViewController
     constructor: (options) ->
       @instrument = options["instrument"]
@@ -7,5 +7,5 @@ define ["views/table_view"], (TableView) ->
       super(options)
 
     loadView: ->
-      @view = new TableView(collection: window.soundManager)
+      @view = new SelectView(collection: window.soundManager)
 #       @view.bind("select", (row) -> console.log row)
