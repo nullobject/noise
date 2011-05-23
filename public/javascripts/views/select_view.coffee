@@ -10,11 +10,16 @@ define ->
       <% collection.each(function(model) { %><option><%= model.toString() %></option><% }); %>
     """
 
+    constructor: (options) ->
+      @selected = options["selected"]
+      super(options)
+
     render: ->
       $(@el).html(@template(collection: @collection))
+      console.log @selected
       this
 
     _change: (event) =>
-      selected = @collection.detect (model) ->
+      model = @collection.detect (model) ->
         model.toString() == event.target.value
-      console.log selected
+      this.trigger("select", model) if model

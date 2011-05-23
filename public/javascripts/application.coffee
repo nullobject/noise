@@ -13,7 +13,6 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
     constructor: ->
       this._initAudio()
       this._initSoundManager()
-      this._initKit()
 
     # TODO: should init the global gain level.
     _initAudio: ->
@@ -43,6 +42,7 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
       console.log("loaded #{sound.id}")
 
     _onAllLoaded: =>
+      this._initKit()
       this._start()
 
     _initKit: ->
@@ -50,82 +50,82 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "bass_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "bass_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "closed_hihat")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "closed_hihat")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "open_hihat")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "open_hihat")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "clap")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "clap")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "clave")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "clave")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "cowbell")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "cowbell")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "rimshot")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "rimshot")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       notes = _([0..15]).map => new Note
       pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: "snare_drum")
+      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
       instruments.push(instrument)
 
       @kit = new Kit(instruments)
@@ -135,8 +135,7 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
       navigationController = new Spleen.NavigationController(rootViewController: kitViewController, view: navigationView)
 
     _playNote: (sound, note) ->
-      sound = @soundManager.get(sound)
-      gain  = note.get("gain")
+      gain = note.get("gain")
 
       # Don't play it if we can't hear it.
       return if gain == 0.0

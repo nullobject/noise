@@ -3,8 +3,11 @@ define ["models/sound"], (Sound) ->
     model: Sound
 
     constructor: (options) ->
-      super(options)
       @audioContext = options["audioContext"]
+      @sounds = new Backbone.Collection([], {model: Sound})
+
+    get: (id) ->
+      @sounds.get(id)
 
     loadSounds: (map) ->
       @remaining = 0
@@ -23,5 +26,5 @@ define ["models/sound"], (Sound) ->
     _onSoundLoaded: (sound, data) =>
       @remaining--
       sound.set(buffer: @audioContext.createBuffer(data, false))
-      this.add(sound)
+      @sounds.add(sound)
       this.trigger("all:loaded") if @remaining == 0

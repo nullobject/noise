@@ -2,7 +2,7 @@ define ["controllers/instrument_settings_view_controller", "views/pattern_view"]
   class InstrumentViewController extends Spleen.ViewController
     constructor: (options) ->
       @instrument = options["instrument"]
-      options["title"] = @instrument.get("sample")
+      options["title"] = @instrument.get("sound").toString()
 
       super(options)
 
