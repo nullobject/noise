@@ -15,8 +15,9 @@ define ->
       super(options)
 
     render: ->
-      $(@el).html(@template(collection: @collection))
-      console.log @selected
+      el = $(@el)
+      el.html(@template(collection: @collection))
+      el.val(@selected.toString())
       this
 
     _change: (event) =>
