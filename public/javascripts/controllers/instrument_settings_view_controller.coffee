@@ -2,8 +2,9 @@ define ["views/instrument_settings_view"], (InstrumentSettingsView) ->
   class InstrumentSettingsViewController extends Spleen.ViewController
     constructor: (options) ->
       @instrument = options["instrument"]
-      options["title"] = @instrument.get("sound").toString()
+      @instrument.bind("change:sound", this._setTitle)
       super(options)
+      this._setTitle()
 
     loadView: ->
       @view = new InstrumentSettingsView(collection: window.soundManager.sounds, selected: @instrument.get("sound"))
@@ -11,3 +12,6 @@ define ["views/instrument_settings_view"], (InstrumentSettingsView) ->
 
     _setSound: (sound) =>
       @instrument.set(sound: sound)
+
+    _setTitle: =>
+      this.setTitle(@instrument.get("sound").toString())

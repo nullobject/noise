@@ -2,9 +2,9 @@ define ["controllers/instrument_settings_view_controller", "views/pattern_view"]
   class InstrumentViewController extends Spleen.ViewController
     constructor: (options) ->
       @instrument = options["instrument"]
-      options["title"] = @instrument.get("sound").toString()
-
+      @instrument.bind("change:sound", this._setTitle)
       super(options)
+      this._setTitle()
 
       settingsButton = new Spleen.Button(className: "settings")
       settingsButton.bind("click", this._openInstrumentSettings)
@@ -16,3 +16,6 @@ define ["controllers/instrument_settings_view_controller", "views/pattern_view"]
     _openInstrumentSettings: =>
       instrumentSettingsViewController = new InstrumentSettingsViewController(instrument: @instrument)
       @navigationController.pushViewController(instrumentSettingsViewController)
+
+    _setTitle: =>
+      this.setTitle(@instrument.get("sound").toString())

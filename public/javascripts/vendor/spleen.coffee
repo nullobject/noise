@@ -13,10 +13,9 @@ Spleen.ViewController =
     constructor: (options = {}) ->
       @navigationController = null
 
-      @title = options["title"]
-      @view  = options["view"]
+      @view = options["view"]
 
-      @navigationItem = new Spleen.NavigationItem(title: @title)
+      @navigationItem = new Spleen.NavigationItem(title: options["title"])
 
       this.loadView() unless @view?
       @view.render() if @view?
@@ -24,6 +23,12 @@ Spleen.ViewController =
     # Creates the view which the view controller manages. Override it with
     # your own view creation logic.
     loadView: ->
+
+    getTitle: ->
+      @navigationItem.get("title")
+
+    setTitle: (value) ->
+      @navigationItem.set(title: value)
 
 Spleen.Button =
   class extends Backbone.View
@@ -48,11 +53,18 @@ Spleen.Label =
     className: "label"
 
     initialize: ->
-      @label = @options["label"]
+      @_text = @options["text"]
 
     render: ->
-      $(@el).text(@label || "")
+      $(@el).text(@_text || "")
       this
+
+    getText: ->
+      @_text
+
+    setText: (value) ->
+      @_text = value
+      this.render()
 
 Spleen.NavigationBar =
   class extends Backbone.View
@@ -88,6 +100,7 @@ Spleen.NavigationBar =
     popNavigationItem: ->
       throw "Can't pop the root navigation item" unless @items.length > 1
       item = @items.pop()
+      item.unbind("change:title")
       @topItem = _(@items).last()
       @backItem = @items[@items.length - 2]
       this.render()
@@ -123,7 +136,9 @@ Spleen.NavigationBar =
 
       if !@titleView && @topItem
         @titleView = @_defaultTitleView
-        @titleView.label = @topItem.title
+        @topItem.bind "change:title", =>
+          @titleView.setText(@topItem.get("title"))
+        @topItem.trigger("change:title")
 
       if @titleView
         $(@_centerContainer).append(@titleView.el)
@@ -183,13 +198,14 @@ Spleen.NavigationController =
       $(from.el).detach() if from?
 
 Spleen.NavigationItem =
-  class
-    constructor: (options) ->
+  class extends Backbone.Model
+    defaults:
+      title: ""
+
+    initialize: ->
       @titleView   = null
       @leftButton  = null
       @rightButton = null
-
-      @title = options["title"]
 
 Spleen.SelectView =
   class extends Backbone.View
