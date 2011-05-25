@@ -1,6 +1,4 @@
 define ->
-  # FIXME: the note view should not change the note model directly, it should
-  # notify the underlying view controller.
   class NoteView extends Backbone.View
     DRAG_THRESHOLD: 0.25
 
@@ -64,6 +62,9 @@ define ->
 
       if @dragging
         gain = (Math.ceil(gain * 5) - 1) / 4
+
+        # FIXME: the note view should not change the note model directly,
+        # it should notify the underlying view controller.
         @model.set(gain: gain)
       else if @startGain
         if Math.abs(gain - @startGain) >= this.DRAG_THRESHOLD
