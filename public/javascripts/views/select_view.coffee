@@ -10,9 +10,8 @@ define ->
       <% collection.each(function(model) { %><option><%= model.toString() %></option><% }); %>
     """
 
-    constructor: (options) ->
-      @selected = options["selected"]
-      super(options)
+    initialize: ->
+      @selected = @options["selected"]
 
     render: ->
       el = $(@el)

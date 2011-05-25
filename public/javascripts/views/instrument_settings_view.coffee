@@ -15,6 +15,9 @@ define ["views/select_view"], (SelectView) ->
 
     render: ->
       $(@el).html(@template)
+
       @selectView.el = $("#sound", @el)
+      @selectView.delegateEvents()
       @selectView.render()
+
       this

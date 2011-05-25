@@ -21,7 +21,7 @@ Spleen.ViewController =
       this.loadView() unless @view?
       @view.render() if @view?
 
-    # Creates the view that the view controller manages. Override it with
+    # Creates the view which the view controller manages. Override it with
     # your own view creation logic.
     loadView: ->
 
