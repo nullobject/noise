@@ -14,19 +14,8 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
       this._initAudio()
       this._initSoundManager()
 
-    # TODO: should init the global gain level.
     _initAudio: ->
       @audioContext = new webkitAudioContext
-
-      @delayNode = @audioContext.createDelayNode()
-      @delayNode.delayTime.value = 0.333
-
-      @feedbackNode = @audioContext.createGainNode()
-      @feedbackNode.gain.value = 0.0
-
-      @delayNode.connect(@audioContext.destination)
-      @delayNode.connect(@feedbackNode)
-      @feedbackNode.connect(@delayNode)
 
     _initSoundManager: ->
       @soundManager = new SoundManager(audioContext: @audioContext)
@@ -134,34 +123,10 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
       navigationView       = new Backbone.View(el: $("#main"))
       navigationController = new Spleen.NavigationController(rootViewController: kitViewController, view: navigationView)
 
-    _playNote: (sound, note) ->
-      gain = note.get("gain")
-
-      # Don't play it if we can't hear it.
-      return if gain == 0.0
-
-      source            = @audioContext.createBufferSource()
-      source.buffer     = sound.get("buffer")
-      source.gain.value = Math.log(gain + 1) / Math.log(2)
-
-      source.connect(@audioContext.destination)
-      source.connect(@feedbackNode)
-      source.noteOn(@currentTime + 0.1)
-
     _start: ->
-      index = 0
-      note = null
+      setInterval(this._tick, 450)
 
-      @currentTime = @audioContext.currentTime
-
-      playNextNote = =>
-        _(@kit.models).each (instrument) =>
-          note  = instrument.get("pattern").models[index]
-          sound = instrument.get("sound")
-          note.set(active: true)
-          this._playNote(sound, note)
-
-        index++
-        index = 0 if index >= 16
-
-      setInterval(playNextNote, 450)
+    _tick: =>
+      currentTime = @audioContext.currentTime
+      @kit.each (instrument) ->
+        instrument.tick(currentTime)
