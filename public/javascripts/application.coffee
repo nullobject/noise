@@ -1,4 +1,4 @@
-define ["sound_manager", "models/note", "models/pattern", "models/instrument", "models/kit", "controllers/kit_view_controller"], (SoundManager, Note, Pattern, Instrument, Kit, KitViewController) ->
+define ["sound_manager", "models/instrument", "models/kit", "controllers/kit_view_controller"], (SoundManager, Instrument, Kit, KitViewController) ->
   class Application
     sounds:
       bass_drum:    "/sounds/808/bd.wav"
@@ -37,85 +37,22 @@ define ["sound_manager", "models/note", "models/pattern", "models/instrument", "
     _initKit: ->
       instruments = []
 
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "bass_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "closed_hihat")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "open_hihat")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "clap")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "clave")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "cowbell")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "rimshot")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
-
-      notes = _([0..15]).map => new Note
-      pattern = new Pattern(notes)
-      instrument = new Instrument(pattern: pattern, sound: @soundManager.get "snare_drum")
-      instruments.push(instrument)
+      instruments.push(new Instrument(sound: @soundManager.get("bass_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("closed_hihat")))
+      instruments.push(new Instrument(sound: @soundManager.get("open_hihat")))
+      instruments.push(new Instrument(sound: @soundManager.get("clap")))
+      instruments.push(new Instrument(sound: @soundManager.get("clave")))
+      instruments.push(new Instrument(sound: @soundManager.get("cowbell")))
+      instruments.push(new Instrument(sound: @soundManager.get("rimshot")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
 
       @kit = new Kit(instruments)
 
