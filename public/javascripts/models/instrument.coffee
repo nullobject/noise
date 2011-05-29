@@ -10,7 +10,7 @@ define ["models/pattern", "models/note"], (Pattern, Note) ->
       this._initPattern()
 
     _initPattern: ->
-      notes = _([0..15]).map => new Note
+      notes = _([0..15]).map -> new Note
       this.set(pattern: new Pattern(notes))
 
     tick: (currentTime) ->
@@ -28,9 +28,17 @@ define ["models/pattern", "models/note"], (Pattern, Note) ->
       # Don't play it if we can't hear it.
       return if gain == 0.0
 
-      source            = window.soundManager.audioContext.createBufferSource()
+      # Create a new source buffer.
+      source = window.soundManager.audioContext.createBufferSource()
+
+      # Set the source buffer.
       source.buffer     = this.get("sound").get("buffer")
+
+      # Set the gain to the logarithmic value.
       source.gain.value = Math.log(gain + 1) / Math.log(2)
 
+      # Connect the source buffer to the destination.
       source.connect(window.soundManager.audioContext.destination)
+
+      # Play the note.
       source.noteOn(currentTime + 0.1)
