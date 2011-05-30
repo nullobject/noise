@@ -32,7 +32,7 @@ define ["models/pattern", "models/note"], (Pattern, Note) ->
       source = window.soundManager.audioContext.createBufferSource()
 
       # Set the source buffer.
-      source.buffer     = this.get("sound").get("buffer")
+      source.buffer = this.get("sound").get("buffer")
 
       # Set the gain to the logarithmic value.
       source.gain.value = Math.log(gain + 1) / Math.log(2)
