@@ -20,7 +20,7 @@ define ["direction"], (Direction) ->
         else
           this._moveNoteToCell(note, cell)
 
-    _moveNoteToCell: (note, cell)
+    _moveNoteToCell: (note, cell) ->
       note.cell.note = null
       cell.note = note
 

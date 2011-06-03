@@ -1,0 +1,54 @@
+PATH
+  remote: ../jasmine-gem
+  specs:
+    jasmine (1.0.2.1)
+      json_pure (>= 1.4.3)
+      rack (>= 1.1)
+      rspec (>= 1.3.1)
+      selenium-webdriver (>= 0.1.3)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    activesupport (3.0.7)
+    barista (1.2.1)
+      coffee-script (~> 2.2)
+    childprocess (0.1.9)
+      ffi (~> 1.0.6)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.1.1)
+    diff-lcs (1.1.2)
+    execjs (1.1.0)
+      multi_json (~> 1.0)
+    ffi (1.0.9)
+    json_pure (1.5.1)
+    multi_json (1.0.3)
+    rack (1.3.0)
+    rake (0.9.1)
+    rspec (2.6.0)
+      rspec-core (~> 2.6.0)
+      rspec-expectations (~> 2.6.0)
+      rspec-mocks (~> 2.6.0)
+    rspec-core (2.6.3)
+    rspec-expectations (2.6.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.6.0)
+    rubyzip (0.9.4)
+    selenium-webdriver (0.2.1)
+      childprocess (>= 0.1.7)
+      ffi (>= 1.0.7)
+      json_pure
+      rubyzip
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activesupport
+  barista
+  coffee-script
+  coffee-script-source
+  jasmine!
+  rake

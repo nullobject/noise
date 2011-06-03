@@ -1,5 +1,8 @@
 public/javascripts/*.js
 public/javascripts/**/*.js
+!public/javascripts/order.js
 !public/javascripts/vendor/*.js
 public/stylesheets/*.css
 !public/javascripts/html5reset.css
+spec/javascripts/*.js
+spec/javascripts/**/*.js
