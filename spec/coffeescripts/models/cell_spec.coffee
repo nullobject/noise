@@ -2,57 +2,63 @@ define ["models/cell"], (Cell) ->
   describe "Cell", ->
     cell = new Cell
 
-    describe "#state", ->
-      it "should initially be null", ->
-        expect(cell.state).toBeNull()
+    describe "#isActive", ->
+      describe "when state is null", ->
+        it "should be false", ->
+          expect(cell.isActive()).toBeFalsy()
+
+      describe "when state is not null", ->
+        it "should be true", ->
+          cell.setState("up")
+          expect(cell.isActive()).toBeTruthy()
 
     describe "#reverse", ->
       it "should reverse UP to DOWN", ->
-        cell.state = Cell.UP
-        expect(cell.reverse().state).toEqual Cell.DOWN
+        cell.setState("up")
+        expect(cell.reverse().getState()).toEqual("down")
 
       it "should reverse DOWN to UP", ->
-        cell.state = Cell.DOWN
-        expect(cell.reverse().state).toEqual Cell.UP
+        cell.setState("down")
+        expect(cell.reverse().getState()).toEqual("up")
 
       it "should reverse LEFT to RIGHT", ->
-        cell.state = Cell.LEFT
-        expect(cell.reverse().state).toEqual Cell.RIGHT
+        cell.setState("left")
+        expect(cell.reverse().getState()).toEqual("right")
 
       it "should reverse RIGHT to LEFT", ->
-        cell.state = Cell.RIGHT
-        expect(cell.reverse().state).toEqual Cell.LEFT
+        cell.setState("right")
+        expect(cell.reverse().getState()).toEqual("left")
 
     describe "#rotate", ->
       it "should rotate UP to RIGHT", ->
-        cell.state = Cell.UP
-        expect(cell.rotate().state).toEqual Cell.RIGHT
+        cell.setState("up")
+        expect(cell.rotate().getState()).toEqual("right")
 
       it "should rotate DOWN to LEFT", ->
-        cell.state = Cell.DOWN
-        expect(cell.rotate().state).toEqual Cell.LEFT
+        cell.setState("down")
+        expect(cell.rotate().getState()).toEqual("left")
 
       it "should rotate LEFT to UP", ->
-        cell.state = Cell.LEFT
-        expect(cell.rotate().state).toEqual Cell.UP
+        cell.setState("left")
+        expect(cell.rotate().getState()).toEqual("up")
 
       it "should rotate RIGHT to DOWN", ->
-        cell.state = Cell.RIGHT
-        expect(cell.rotate().state).toEqual Cell.DOWN
+        cell.setState("right")
+        expect(cell.rotate().getState()).toEqual("down")
 
-    describe "#getOffset", ->
+    describe "#getVector", ->
       it "should match for UP", ->
-        cell.state = Cell.UP
-        expect(cell.getOffset()).toEqual [0, -1]
+        cell.setState("up")
+        expect(cell.getVector()).toEqual([0, -1])
 
       it "should match for DOWN", ->
-        cell.state = Cell.DOWN
-        expect(cell.getOffset()).toEqual [0, 1]
+        cell.setState("down")
+        expect(cell.getVector()).toEqual([0, 1])
 
       it "should match for LEFT", ->
-        cell.state = Cell.LEFT
-        expect(cell.getOffset()).toEqual [-1, 0]
+        cell.setState("left")
+        expect(cell.getVector()).toEqual([-1, 0])
 
       it "should match for RIGHT", ->
-        cell.state = Cell.RIGHT
-        expect(cell.getOffset()).toEqual [1, 0]
+        cell.setState("right")
+        expect(cell.getVector()).toEqual([1, 0])

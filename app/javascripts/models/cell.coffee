@@ -1,31 +1,41 @@
 define ->
   class Cell extends Backbone.Model
-    @UP:    0
-    @DOWN:  1
-    @LEFT:  2
-    @RIGHT: 3
+    defaults:
+      state: null
 
-    initialize: ->
-      @state = null
+    # State helper methods.
+    getState:         -> this.get("state")
+    setState: (value) -> this.set(state: value)
+
+    # Column and row helper methods.
+    getColumn: -> @column
+    getRow:    -> @row
+
+    initialize: (attributes, options) ->
+      if options?
+        @column = options["column"]
+        @row    = options["row"]
+
+    # Returns true if the cell is active, false otherwise.
+    isActive: -> this.getState()?
 
     # Reverses the cell.
     reverse: ->
-      @state = this._udlr(Cell.DOWN, Cell.UP, Cell.RIGHT, Cell.LEFT)
+      this.setState(this._udlr("down", "up", "right", "left"))
       this
 
     # Rotates the cell clockwise.
     rotate: ->
-      @state = this._udlr(Cell.RIGHT, Cell.LEFT, Cell.UP, Cell.DOWN)
+      this.setState(this._udlr("right", "left", "up", "down"))
       this
 
-    # Returns the cartesian offset for the cell.
-    getOffset: ->
-      this._udlr([0, -1], [0, 1], [-1, 0], [1, 0])
+    # Returns the cartesian vector for the cell.
+    getVector: -> this._udlr([0, -1], [0, 1], [-1, 0], [1, 0])
 
     _udlr: (up, down, left, right) ->
-      switch @state
-        when Cell.UP    then up
-        when Cell.DOWN  then down
-        when Cell.LEFT  then left
-        when Cell.RIGHT then right
-        else throw "unknown state '#{@state}'"
+      switch this.getState()
+        when "up"    then up
+        when "down"  then down
+        when "left"  then left
+        when "right" then right
+        else throw "unknown state '#{this.getState()}'"

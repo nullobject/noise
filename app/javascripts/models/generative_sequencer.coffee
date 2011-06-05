@@ -1,27 +1,33 @@
-define ["direction"], (Direction) ->
-  # A generative sequencer represents a pattern of notes which move around
+define ["models/pattern"], (Pattern) ->
+  # A generative sequencer represents a pattern of cells which move around
   # a grid and trigger sounds.
-  #
-  # The rules:
-  #   * if the destination is off the grid then reverse the direction and trigger a sound.
-  #   * if the destination is occupied by another note then rotate the direction
-  #   * otherwise move the note to the destination.
-  class GenerativeSequencer
+  class GenerativeSequencer extends Backbone.Model
+    initialize: ->
+      this.set(pattern: Pattern.createPattern())
+
+    getPattern: -> this.get("pattern")
+
+    # Moves the cells around according to the following rules:
+    #   * if the target cell is off the edge of the pattern then reverse the
+    #     direction and trigger a sound
+    #   * if the target cell is occupied by another cell then rotate the direction
+    #   * otherwise move the cell to the target cell
     tick: (currentTime) ->
-      _(@pattern.activeNotes).each (note) =>
-        [columnOffset, rowOffset] = note.direction.getOffset()
-        cell = @pattern.getCellAt(note.column + columnOffset, note.row + rowOffset)
+      _(this.getPattern().getActiveCells()).each (cell) =>
+        [columnOffset, rowOffset] = cell.getVector()
+        targetCell = this.getPattern().getCellAt(cell.getColumn() + columnOffset, cell.getRow() + rowOffset)
 
-        if !cell
-          this._playNote(currentTime, note)
-          note.direction.reverse()
-        else if cell.note
-          note.direction.rotate()
+        if !targetCell
+          this._triggerSound(currentTime)
+          cell.reverse()
+        else if targetCell.getState()
+          cell.rotate()
         else
-          this._moveNoteToCell(note, cell)
+          this._moveCell(cell, targetCell)
 
-    _moveNoteToCell: (note, cell) ->
-      note.cell.note = null
-      cell.note = note
+    _moveCell: (sourceCell, destinationCell) ->
+      destinationCell.setState(sourceCell.getState())
+      sourceCell.setState(null)
 
-    _playNote: (currentTime, note) ->
+    _triggerSound: (currentTime) ->
+      # TODO
