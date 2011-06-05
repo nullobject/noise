@@ -14,20 +14,33 @@ define ["models/pattern"], (Pattern) ->
     #   * otherwise move the cell to the target cell
     tick: (currentTime) ->
       _(this.getPattern().getActiveCells()).each (cell) =>
-        [columnOffset, rowOffset] = cell.getVector()
-        targetCell = this.getPattern().getCellAt(cell.getColumn() + columnOffset, cell.getRow() + rowOffset)
+        [targetColumn, targetRow] = cell.getTarget()
+        targetCell = this.getPattern().getCellAt(targetColumn, targetRow)
 
         if !targetCell
-          this._triggerSound(currentTime)
+          this._triggerSound(currentTime, cell)
           cell.reverse()
         else if targetCell.getState()
           cell.rotate()
         else
           this._moveCell(cell, targetCell)
 
-    _moveCell: (sourceCell, destinationCell) ->
-      destinationCell.setState(sourceCell.getState())
-      sourceCell.setState(null)
+    # Moves the given cell to the given target cell.
+    _moveCell: (cell, targetCell) ->
+      targetCell.setState(cell.getState())
+      cell.setState(null)
 
-    _triggerSound: (currentTime) ->
+    # Returns the collision index for the given cell.
+    _getCollisionIndex: (cell) ->
+      [targetColumn, targetRow] = cell.getTarget()
+
+      if targetColumn < 0 || targetColumn > 3
+        targetRow
+      else if targetRow < 0 || targetRow > 3
+        targetColumn
+      else
+        throw "cell did not collide"
+
+    _triggerSound: (currentTime, cell) ->
       # TODO
+#       index = this._getCollisionIndex(cell)

@@ -19,12 +19,6 @@ define ["models/generative_sequencer"], (GenerativeSequencer) ->
         sequencer.tick(0)
         expect(sequencer.getPattern().getCellAt(3, 3).getState()).toEqual("up")
 
-      it "should trigger a sound when a cell hits the edge of the pattern", ->
-        spyOn(sequencer, "_triggerSound")
-        sequencer.getPattern().getCellAt(3, 3).setState("down")
-        sequencer.tick(0)
-        expect(sequencer._triggerSound).toHaveBeenCalledWith(0)
-
       it "should rotate the direction of a cell which hits another active cell", ->
         sequencer.getPattern().getCellAt(0, 0).setState("down")
         sequencer.getPattern().getCellAt(0, 1).setState("right")
@@ -32,3 +26,10 @@ define ["models/generative_sequencer"], (GenerativeSequencer) ->
         expect(sequencer.getPattern().getCellAt(0, 0).getState()).toEqual("down")
         sequencer.tick(0)
         expect(sequencer.getPattern().getCellAt(0, 0).getState()).toEqual("left")
+
+      it "should trigger a sound when a cell hits the edge of the pattern", ->
+        cell = sequencer.getPattern().getCellAt(3, 3).setState("down")
+
+        spyOn(sequencer, "_triggerSound")
+        sequencer.tick(0)
+        expect(sequencer._triggerSound).toHaveBeenCalledWith(0, cell)
