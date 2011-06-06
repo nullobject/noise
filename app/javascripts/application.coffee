@@ -1,4 +1,4 @@
-define ["sound_manager", "models/instrument", "models/kit", "controllers/kit_view_controller"], (SoundManager, Instrument, Kit, KitViewController) ->
+define ["sound_manager", "models/generative_sequencer", "models/instrument", "models/kit", "controllers/kit_view_controller"], (SoundManager, GenerativeSequencer, Instrument, Kit, KitViewController) ->
   class Application
     sounds:
       bass_drum:    "/sounds/808/bd.wav"
@@ -11,18 +11,10 @@ define ["sound_manager", "models/instrument", "models/kit", "controllers/kit_vie
       rimshot:      "/sounds/808/rs.wav"
 
     constructor: ->
-      this._initAudio()
       this._initSoundManager()
 
-    _initAudio: ->
-      @audioContext = new webkitAudioContext
-
     _initSoundManager: ->
-      @soundManager = new SoundManager(audioContext: @audioContext)
-
-      # FIXME: ugly hack.
-      window.soundManager = @soundManager
-
+      @soundManager = new SoundManager.getInstance()
       @soundManager.bind("add", this._onSoundLoaded)
       @soundManager.bind("all:loaded", this._onAllLoaded)
       @soundManager.loadSounds(@sounds)
@@ -37,24 +29,9 @@ define ["sound_manager", "models/instrument", "models/kit", "controllers/kit_vie
     _initKit: ->
       instruments = []
 
-      instruments.push(new Instrument(sound: @soundManager.get("bass_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("closed_hihat")))
-      instruments.push(new Instrument(sound: @soundManager.get("open_hihat")))
-      instruments.push(new Instrument(sound: @soundManager.get("clap")))
-      instruments.push(new Instrument(sound: @soundManager.get("clave")))
-      instruments.push(new Instrument(sound: @soundManager.get("cowbell")))
-      instruments.push(new Instrument(sound: @soundManager.get("rimshot")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
-      instruments.push(new Instrument(sound: @soundManager.get("snare_drum")))
+      @kit = new Kit
 
-      @kit = new Kit(instruments)
+      @kit.add(new GenerativeSequencer(instrument: new Instrument(sound: @soundManager.get("bass_drum"))))
 
       kitViewController    = new KitViewController(kit: @kit)
       navigationView       = new Backbone.View(el: $("#main"))
@@ -64,6 +41,5 @@ define ["sound_manager", "models/instrument", "models/kit", "controllers/kit_vie
       setInterval(this._tick, 450)
 
     _tick: =>
-      currentTime = @audioContext.currentTime
-      @kit.each (instrument) ->
-        instrument.tick(currentTime)
+      time = @soundManager.getAudioContext().currentTime + 0.1
+      @kit.each (instrument) -> instrument.tick(time)

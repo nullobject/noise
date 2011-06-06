@@ -1,28 +1,35 @@
-define ["models/instrument", "models/pattern"], (Instrument,Pattern) ->
+define ["models/instrument", "models/pattern"], (Instrument, Pattern) ->
   # A generative sequencer represents a pattern of cells which move around
   # a grid and trigger sounds.
   class GenerativeSequencer extends Backbone.Model
+    defaults:
+      instrument: null
+      pattern: null
+
     initialize: ->
-      this.set(instrument: new Instrument, pattern: Pattern.createPattern())
+      this.setInstrument(new Instrument) unless this.getInstrument()
+      this.setPattern(Pattern.createPattern()) unless this.getPattern()
 
-    # Returns the pattern.
-    getPattern: -> this.get("pattern")
+    # Instrument accessor methods.
+    getInstrument:         -> this.get("instrument")
+    setInstrument: (value) -> this.set(instrument: value)
 
-    # Returns the instrument.
-    getInstrument: -> this.get("instrument")
+    # Pattern accessor methods.
+    getPattern:         -> this.get("pattern")
+    setPattern: (value) -> this.set(pattern: value)
 
     # Moves the cells around according to the following rules:
     #   * if the target cell is off the edge of the pattern then reverse the
     #     direction and trigger a sound
     #   * if the target cell is occupied by another cell then rotate the direction
     #   * otherwise move the cell to the target cell
-    tick: (currentTime) ->
+    tick: (time) ->
       _(this.getPattern().getActiveCells()).each (cell) =>
         [targetColumn, targetRow] = cell.getTarget()
         targetCell = this.getPattern().getCellAt(targetColumn, targetRow)
 
         if !targetCell
-          this._triggerSound(currentTime, cell)
+          this._triggerSound(time, cell)
           cell.reverse()
         else if targetCell.getState()
           cell.rotate()
@@ -50,7 +57,7 @@ define ["models/instrument", "models/pattern"], (Instrument,Pattern) ->
     _getNote: (index) ->
       return "C"
 
-    _triggerSound: (currentTime, cell) ->
+    _triggerSound: (time, cell) ->
       index = this._getCollisionIndex(cell)
       note  = this._getNote(index)
-      this.getInstrument().playNote(currentTime, note)
+      this.getInstrument().playNote(time, note)

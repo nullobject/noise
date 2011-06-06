@@ -8,11 +8,11 @@ define ->
         @column = options["column"]
         @row    = options["row"]
 
-    # State helper methods.
+    # State accessor methods.
     getState:         -> this.get("state")
     setState: (value) -> this.set(state: value)
 
-    # Column and row helper methods.
+    # Column and row accessor methods.
     getColumn: -> @column
     getRow:    -> @row
 

@@ -1,19 +1,27 @@
 define ["models/sound"], (Sound) ->
-  class SoundManager extends Backbone.Collection
-    model: Sound
+  class SoundManager
+    @instance: null
 
-    constructor: (options) ->
-      @audioContext = options["audioContext"]
+    # Returns an instance of the sound manager.
+    @getInstance: ->
+      @instance ||= new SoundManager
+
+    # Returns the sounds.
+    getSounds: -> @sounds
+
+    constructor: ->
+      _(this).extend(Backbone.Events)
+      @audioContext = new webkitAudioContext
       @sounds = new Backbone.Collection([], {model: Sound})
-
-    get: (id) ->
-      @sounds.get(id)
-
-    loadSounds: (map) ->
       @remaining = 0
-      for id, url of map
-        this.loadSound(id, url)
 
+    # Returns the audio context.
+    getAudioContext: -> @audioContext
+
+    # Returns the sound with the given ID.
+    get: (id) -> @sounds.get(id)
+
+    # Loads the sound with the given ID from the given URL.
     loadSound: (id, url) ->
       @remaining++
       sound = new Sound(id: id, url: url)
@@ -22,6 +30,11 @@ define ["models/sound"], (Sound) ->
       request.responseType = "arraybuffer"
       request.onload = => this._onSoundLoaded(sound, request.response)
       request.send()
+
+    # Loads the given sounds.
+    loadSounds: (map) ->
+      for id, url of map
+        this.loadSound(id, url)
 
     _onSoundLoaded: (sound, data) =>
       @remaining--

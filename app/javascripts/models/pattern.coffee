@@ -21,10 +21,3 @@ define ["models/cell"], (Cell) ->
     getCellAt: (column, row) ->
       index = (row * 4) + column
       this.at(index)
-
-#     initialize: ->
-#       _(@models).each (cell) ->
-#         cell.bind("change:state", this._cellStateChanged)
-#
-#     _cellStateChanged: (cell) =>
-#       console.log cell

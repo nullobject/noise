@@ -30,6 +30,6 @@ define ["models/generative_sequencer"], (GenerativeSequencer) ->
       it "should trigger a sound when a cell hits the edge of the pattern", ->
         cell = sequencer.getPattern().getCellAt(3, 3).setState("down")
 
-        spyOn(sequencer, "_triggerSound")
+        spyOn(sequencer, "_triggerSound").andReturn(null)
         sequencer.tick(0)
         expect(sequencer._triggerSound).toHaveBeenCalledWith(0, cell)

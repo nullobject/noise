@@ -1,9 +1,10 @@
-define ["models/instrument"], (Instrument) ->
+define ["models/instrument", "models/sound"], (Instrument, Sound) ->
   describe "Instrument", ->
-    instrument = new Instrument
+    sound = new Sound
+    instrument = new Instrument(sound: sound)
 
     describe "#playNote", ->
-      it "should play the given", ->
-#         spyOn(instrument, "play")
+      it "should play the sound", ->
+        spyOn(sound, "play")
         instrument.playNote(0)
-#         expect(sequencer._triggerSound).toHaveBeenCalledWith(0, cell)
+        expect(sound.play).toHaveBeenCalledWith(0, 1.0)
