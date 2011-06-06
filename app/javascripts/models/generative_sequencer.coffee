@@ -1,11 +1,15 @@
-define ["models/pattern"], (Pattern) ->
+define ["models/instrument", "models/pattern"], (Instrument,Pattern) ->
   # A generative sequencer represents a pattern of cells which move around
   # a grid and trigger sounds.
   class GenerativeSequencer extends Backbone.Model
     initialize: ->
-      this.set(pattern: Pattern.createPattern())
+      this.set(instrument: new Instrument, pattern: Pattern.createPattern())
 
+    # Returns the pattern.
     getPattern: -> this.get("pattern")
+
+    # Returns the instrument.
+    getInstrument: -> this.get("instrument")
 
     # Moves the cells around according to the following rules:
     #   * if the target cell is off the edge of the pattern then reverse the
@@ -30,7 +34,8 @@ define ["models/pattern"], (Pattern) ->
       targetCell.setState(cell.getState())
       cell.setState(null)
 
-    # Returns the collision index for the given cell.
+    # Returns the row/column in which the cell collided with the edge of
+    # the pattern.
     _getCollisionIndex: (cell) ->
       [targetColumn, targetRow] = cell.getTarget()
 
@@ -41,6 +46,11 @@ define ["models/pattern"], (Pattern) ->
       else
         throw "cell did not collide"
 
+    # TODO: calculate the note from the collision index.
+    _getNote: (index) ->
+      return "C"
+
     _triggerSound: (currentTime, cell) ->
-      # TODO
-#       index = this._getCollisionIndex(cell)
+      index = this._getCollisionIndex(cell)
+      note  = this._getNote(index)
+      this.getInstrument().playNote(currentTime, note)

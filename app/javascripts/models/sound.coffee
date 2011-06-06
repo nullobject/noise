@@ -4,5 +4,10 @@ define ->
       buffer: null
       url:    null
 
-    toString: ->
-      @id
+    # Returns the buffer.
+    getBuffer: -> this.get("buffer")
+
+    # Returns the URL.
+    getUrl: -> this.get("url")
+
+    toString: -> @id
