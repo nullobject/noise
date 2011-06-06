@@ -1,22 +1,16 @@
 define ["models/instrument", "models/pattern"], (Instrument, Pattern) ->
-  # A generative sequencer represents a pattern of cells which move around
-  # a grid and trigger sounds.
-  class GenerativeSequencer extends Backbone.Model
+  # A generative sequencer is an instrument which has a pattern of cells
+  # which move around a grid and trigger sounds.
+  class GenerativeSequencer extends Instrument
     defaults:
-      instrument: null
       pattern: null
-
-    initialize: ->
-      this.setInstrument(new Instrument) unless this.getInstrument()
-      this.setPattern(Pattern.createPattern()) unless this.getPattern()
-
-    # Instrument accessor methods.
-    getInstrument:         -> this.get("instrument")
-    setInstrument: (value) -> this.set(instrument: value)
 
     # Pattern accessor methods.
     getPattern:         -> this.get("pattern")
     setPattern: (value) -> this.set(pattern: value)
+
+    initialize: ->
+      this.setPattern(Pattern.createPattern())
 
     # Moves the cells around according to the following rules:
     #   * if the target cell is off the edge of the pattern then reverse the
@@ -60,4 +54,4 @@ define ["models/instrument", "models/pattern"], (Instrument, Pattern) ->
     _triggerSound: (time, cell) ->
       index = this._getCollisionIndex(cell)
       note  = this._getNote(index)
-      this.getInstrument().playNote(time, note)
+      this.playNote(time, note, 1.0)

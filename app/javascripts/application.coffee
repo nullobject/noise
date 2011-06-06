@@ -1,4 +1,4 @@
-define ["sound_manager", "models/generative_sequencer", "models/instrument", "models/kit", "controllers/kit_view_controller"], (SoundManager, GenerativeSequencer, Instrument, Kit, KitViewController) ->
+define ["sound_manager", "controllers/kit_view_controller", "models/generative_sequencer", "models/kit"], (SoundManager, KitViewController, GenerativeSequencer, Kit) ->
   class Application
     sounds:
       bass_drum:    "/sounds/808/bd.wav"
@@ -14,11 +14,12 @@ define ["sound_manager", "models/generative_sequencer", "models/instrument", "mo
       this._initSoundManager()
 
     _initSoundManager: ->
-      @soundManager = new SoundManager.getInstance()
+      @soundManager = SoundManager.getInstance()
       @soundManager.bind("add", this._onSoundLoaded)
       @soundManager.bind("all:loaded", this._onAllLoaded)
       @soundManager.loadSounds(@sounds)
 
+    # FIXME: the sound manager isn't triggering this event.
     _onSoundLoaded: (sound) =>
       console.log("loaded #{sound.id}")
 
@@ -27,11 +28,9 @@ define ["sound_manager", "models/generative_sequencer", "models/instrument", "mo
       this._start()
 
     _initKit: ->
-      instruments = []
-
       @kit = new Kit
 
-      @kit.add(new GenerativeSequencer(instrument: new Instrument(sound: @soundManager.get("bass_drum"))))
+      @kit.add(new GenerativeSequencer(sound: @soundManager.get("bass_drum")))
 
       kitViewController    = new KitViewController(kit: @kit)
       navigationView       = new Backbone.View(el: $("#main"))
@@ -42,4 +41,5 @@ define ["sound_manager", "models/generative_sequencer", "models/instrument", "mo
 
     _tick: =>
       time = @soundManager.getAudioContext().currentTime + 0.1
+      console.log time
       @kit.each (instrument) -> instrument.tick(time)

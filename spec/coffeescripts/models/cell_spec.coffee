@@ -2,9 +2,27 @@ define ["models/cell"], (Cell) ->
   describe "Cell", ->
     cell = new Cell
 
+    describe "#getVector", ->
+      it "should match for UP", ->
+        cell.setState("up")
+        expect(cell.getVector()).toEqual([0, -1])
+
+      it "should match for DOWN", ->
+        cell.setState("down")
+        expect(cell.getVector()).toEqual([0, 1])
+
+      it "should match for LEFT", ->
+        cell.setState("left")
+        expect(cell.getVector()).toEqual([-1, 0])
+
+      it "should match for RIGHT", ->
+        cell.setState("right")
+        expect(cell.getVector()).toEqual([1, 0])
+
     describe "#isActive", ->
       describe "when state is null", ->
         it "should be false", ->
+          cell.setState(null)
           expect(cell.isActive()).toBeFalsy()
 
       describe "when state is not null", ->
@@ -46,19 +64,23 @@ define ["models/cell"], (Cell) ->
         cell.setState("right")
         expect(cell.rotate().getState()).toEqual("down")
 
-    describe "#getVector", ->
-      it "should match for UP", ->
+    describe "#toggle", ->
+      it "should toggle NULL to UP", ->
+        cell.setState(null)
+        expect(cell.toggle().getState()).toEqual("up")
+
+      it "should toggle UP to RIGHT", ->
         cell.setState("up")
-        expect(cell.getVector()).toEqual([0, -1])
+        expect(cell.toggle().getState()).toEqual("right")
 
-      it "should match for DOWN", ->
-        cell.setState("down")
-        expect(cell.getVector()).toEqual([0, 1])
-
-      it "should match for LEFT", ->
-        cell.setState("left")
-        expect(cell.getVector()).toEqual([-1, 0])
-
-      it "should match for RIGHT", ->
+      it "should toggle RIGHT to DOWN", ->
         cell.setState("right")
-        expect(cell.getVector()).toEqual([1, 0])
+        expect(cell.toggle().getState()).toEqual("down")
+
+      it "should toggle DOWN to LEFT", ->
+        cell.setState("down")
+        expect(cell.toggle().getState()).toEqual("left")
+
+      it "should toggle LEFT to NULL", ->
+        cell.setState("left")
+        expect(cell.toggle().getState()).toEqual(null)

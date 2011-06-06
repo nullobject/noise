@@ -1,5 +1,5 @@
 define ->
-  # An instrument represents a sound collection of sounds.
+  # An instrument represents a collection of sounds.
   class Instrument extends Backbone.Model
     defaults:
       sound: null
@@ -8,6 +8,11 @@ define ->
     getSound:         -> this.get("sound")
     setSound: (value) -> this.set(sound: value)
 
-    # Plays the note at the given time.
-    playNote: (time, note = "C", gain = 1.0) ->
-      this.getSound().play(time, gain)
+    # Updates the instrument state.
+    tick: (time) -> throw "not implemented"
+
+    # Plays a note.
+    playNote: (time, note, gain) ->
+      # TODO: look up the correct sound to play for the given note.
+      sound = this.getSound()
+      sound.play(time, gain) if sound

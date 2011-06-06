@@ -1,6 +1,6 @@
 define ["sound_manager"], (SoundManager) ->
   describe "SoundManager", ->
-    sound_manager = SoundManager.getInstance()
+    sound_manager = new SoundManager
 
     describe "#get", ->
       it "should return the sound with the given ID", ->

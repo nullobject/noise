@@ -24,7 +24,7 @@ define ["models/sound"], (Sound) ->
     # Loads the sound with the given ID from the given URL.
     loadSound: (id, url) ->
       @remaining++
-      sound = new Sound(id: id, url: url)
+      sound = new Sound({id: id, url: url}, {sound_manager: this})
       request = new XMLHttpRequest()
       request.open("GET", url, true)
       request.responseType = "arraybuffer"

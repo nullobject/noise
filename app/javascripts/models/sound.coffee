@@ -4,6 +4,9 @@ define ->
       buffer: null
       url:    null
 
+    initialize: (attributes, options) ->
+      @sound_manager = options["sound_manager"]
+
     # Returns the buffer.
     getBuffer: -> this.get("buffer")
 
@@ -19,7 +22,7 @@ define ->
       return if gain <= 0.0
 
       # Create a new source buffer.
-      source = SoundManager.getInstance().getAudioContext().createBufferSource()
+      source = @sound_manager.getAudioContext().createBufferSource()
 
       # Set the source buffer.
       source.buffer = this.getBuffer()
@@ -28,7 +31,7 @@ define ->
       source.gain.value = Math.log(gain + 1) / Math.log(2)
 
       # Connect the source buffer to the destination.
-      source.connect(SoundManager.getInstance().getAudioContext().destination)
+      source.connect(@sound_manager.getAudioContext().destination)
 
       # Play the note.
       source.noteOn(time)

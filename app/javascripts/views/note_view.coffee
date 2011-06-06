@@ -24,7 +24,8 @@ define ->
 
       @height = el.outerHeight()
 
-      el.toggleClass("active", @model.get("active"))
+      el.removeClass("up down left right")
+      el.addClass(@model.get("state")) if @model.get("state")
       el.removeClass("gain-0 gain-25 gain-50 gain-75 gain-100")
       el.addClass(this._getGainClass())
 

@@ -33,6 +33,13 @@ define ->
     # Rotates the cell clockwise.
     rotate: -> this.setState(this._udlr("right", "left", "up", "down"))
 
+    # Toggles the cell through the states.
+    toggle: ->
+      switch this.getState()
+        when "up", "down", "right" then this.rotate()
+        when "left" then this.setState(null)
+        else this.setState("up")
+
     _udlr: (up, down, left, right) ->
       switch this.getState()
         when "up"    then up
