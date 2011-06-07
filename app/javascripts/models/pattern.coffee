@@ -19,5 +19,10 @@ define ["models/cell"], (Cell) ->
 
     # Returns the cell at the given column and row.
     getCellAt: (column, row) ->
-      index = (row * 4) + column
-      this.at(index)
+      if column >= 0 && column <= 3 && row >= 0 && row <= 3
+        this.at((row * 4) + column)
+      else
+        null
+
+    # Clears the cells in the pattern.
+    clear: -> this.each (cell) -> cell.clear()

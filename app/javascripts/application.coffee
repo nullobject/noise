@@ -41,5 +41,4 @@ define ["sound_manager", "controllers/kit_view_controller", "models/generative_s
 
     _tick: =>
       time = @soundManager.getAudioContext().currentTime + 0.1
-      console.log time
       @kit.each (instrument) -> instrument.tick(time)

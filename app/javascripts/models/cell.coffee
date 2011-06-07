@@ -27,6 +27,9 @@ define ->
     # Returns true if the cell is active, false otherwise.
     isActive: -> this.getState()?
 
+    # Clears the cell.
+    clear: -> this.setState(null)
+
     # Reverses the cell.
     reverse: -> this.setState(this._udlr("down", "up", "right", "left"))
 
@@ -37,7 +40,7 @@ define ->
     toggle: ->
       switch this.getState()
         when "up", "down", "right" then this.rotate()
-        when "left" then this.setState(null)
+        when "left" then this.clear()
         else this.setState("up")
 
     _udlr: (up, down, left, right) ->

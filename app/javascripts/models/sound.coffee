@@ -5,7 +5,8 @@ define ->
       url:    null
 
     initialize: (attributes, options) ->
-      @sound_manager = options["sound_manager"]
+      if options?
+        @sound_manager = options["sound_manager"]
 
     # Returns the buffer.
     getBuffer: -> this.get("buffer")

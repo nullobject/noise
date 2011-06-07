@@ -30,3 +30,7 @@ define ["models/pattern"], (Pattern) ->
 
         cell = pattern.at(15)
         expect(pattern.getCellAt(3, 3)).toEqual(cell)
+
+    describe "#clear", ->
+      it "should clear the cells", ->
+        # TODO

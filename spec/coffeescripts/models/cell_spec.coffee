@@ -30,6 +30,11 @@ define ["models/cell"], (Cell) ->
           cell.setState("up")
           expect(cell.isActive()).toBeTruthy()
 
+    describe "#clear", ->
+      it "should set the state to NULL", ->
+        cell.setState("up")
+        expect(cell.clear().getState()).toEqual(null)
+
     describe "#reverse", ->
       it "should reverse UP to DOWN", ->
         cell.setState("up")
