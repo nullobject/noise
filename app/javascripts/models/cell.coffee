@@ -3,18 +3,17 @@ define ->
     defaults:
       state: null
 
-    initialize: (attributes, options) ->
-      if options?
-        @column = options["column"]
-        @row    = options["row"]
-
     # State accessor methods.
     getState:         -> this.get("state")
     setState: (value) -> this.set(state: value)
 
-    # Column and row accessor methods.
-    getColumn: -> @column
-    getRow:    -> @row
+    # Column accessor methods.
+    getColumn:         -> @column
+    setColumn: (value) -> @column = value; this
+
+    # Row accessor methods.
+    getRow:         -> @row
+    setRow: (value) -> @row = value; this
 
     # Returns the cartesian vector for the cell.
     getVector: -> this._udlr([0, -1], [0, 1], [-1, 0], [1, 0])

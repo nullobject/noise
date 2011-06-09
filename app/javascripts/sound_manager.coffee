@@ -1,4 +1,5 @@
 define ["models/sound"], (Sound) ->
+  # The sound manager handles the loading of sounds.
   class SoundManager
     @instance: null
 
