@@ -37,8 +37,8 @@ define ["sound_manager", "controllers/kit_view_controller", "models/generative_s
       navigationController = new Spleen.NavigationController(rootViewController: kitViewController, view: navigationView)
 
     _start: ->
-      setInterval(this._tick, 450)
+      setInterval(this._tick, 250)
 
     _tick: =>
-      time = @soundManager.getAudioContext().currentTime + 0.1
+      time = @soundManager.getAudioContext().currentTime + 0.2
       @kit.each (instrument) -> instrument.tick(time)

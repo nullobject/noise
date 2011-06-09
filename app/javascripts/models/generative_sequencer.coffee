@@ -2,6 +2,8 @@ define ["models/instrument", "models/pattern"], (Instrument, Pattern) ->
   # A generative sequencer is an instrument which has a pattern of cells
   # which move around a grid and trigger sounds.
   class GenerativeSequencer extends Instrument
+    @SIZE: 64
+
     defaults:
       pattern: null
 
@@ -9,8 +11,7 @@ define ["models/instrument", "models/pattern"], (Instrument, Pattern) ->
     getPattern:         -> this.get("pattern")
     setPattern: (value) -> this.set(pattern: value)
 
-    initialize: ->
-      this.setPattern(Pattern.createPattern())
+    initialize: -> this.setPattern(Pattern.createPattern(GenerativeSequencer.SIZE))
 
     # Moves the cells around according to the following rules:
     #   * if the target cell is off the edge of the pattern then reverse the

@@ -10,9 +10,9 @@ define ["models/cell"], (Cell) ->
 
     refresh: (models, options) ->
       super(models, options)
-      @_row_size = Math.sqrt(this.size())
+      @sqrt_size = Math.sqrt(this.size())
       this.each (cell, index) =>
-        [column, row] = [index % @_row_size, Math.floor(index / @_row_size)]
+        [column, row] = [index % @sqrt_size, Math.floor(index / @sqrt_size)]
         cell.setColumn(column).setRow(row)
       this
 
@@ -22,8 +22,8 @@ define ["models/cell"], (Cell) ->
 
     # Returns the cell at the given column and row.
     getCellAt: (column, row) ->
-      if column >= 0 && column <= (@_row_size - 1) && row >= 0 && row <= (@_row_size - 1)
-        this.at((row * @_row_size) + column)
+      if column >= 0 && column <= (@sqrt_size - 1) && row >= 0 && row <= (@sqrt_size - 1)
+        this.at((row * @sqrt_size) + column)
       else
         null
 

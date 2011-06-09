@@ -1,4 +1,4 @@
-define ["models/sound"], (Sound) ->
+define ["models/sound", "models/sound_set"], (Sound, SoundSet) ->
   # The sound manager handles the loading of sounds.
   class SoundManager
     @instance: null
@@ -13,7 +13,7 @@ define ["models/sound"], (Sound) ->
     constructor: ->
       _(this).extend(Backbone.Events)
       @audioContext = new webkitAudioContext
-      @sounds = new Backbone.Collection([], {model: Sound})
+      @sounds = new SoundSet
       @remaining = 0
 
     # Returns the audio context.
