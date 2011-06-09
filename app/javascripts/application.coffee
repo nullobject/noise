@@ -1,14 +1,15 @@
 define ["sound_manager", "controllers/kit_view_controller", "models/generative_sequencer", "models/kit"], (SoundManager, KitViewController, GenerativeSequencer, Kit) ->
   class Application
     sounds:
-      bass_drum:    "/sounds/808/bd.wav"
-      snare_drum:   "/sounds/808/sd.wav"
-      closed_hihat: "/sounds/808/ch.wav"
-      open_hihat:   "/sounds/808/oh.wav"
-      clap:         "/sounds/808/cp.wav"
-      clave:        "/sounds/808/cl.wav"
-      cowbell:      "/sounds/808/cb.wav"
-      rimshot:      "/sounds/808/rs.wav"
+      808:
+        bass_drum:    "/sounds/808/bd.wav"
+        snare_drum:   "/sounds/808/sd.wav"
+        closed_hihat: "/sounds/808/ch.wav"
+        open_hihat:   "/sounds/808/oh.wav"
+        clap:         "/sounds/808/cp.wav"
+        clave:        "/sounds/808/cl.wav"
+        cowbell:      "/sounds/808/cb.wav"
+        rimshot:      "/sounds/808/rs.wav"
 
     constructor: ->
       this._initSoundManager()
@@ -30,7 +31,7 @@ define ["sound_manager", "controllers/kit_view_controller", "models/generative_s
     _initKit: ->
       @kit = new Kit
 
-      @kit.add(new GenerativeSequencer(sound: @soundManager.get("bass_drum")))
+      @kit.add(new GenerativeSequencer(soundSet: @soundManager.getSoundSet("808")))
 
       kitViewController    = new KitViewController(kit: @kit)
       navigationView       = new Backbone.View(el: $("#main"))

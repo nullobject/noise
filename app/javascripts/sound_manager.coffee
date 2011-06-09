@@ -7,22 +7,34 @@ define ["models/sound", "models/sound_set"], (Sound, SoundSet) ->
     @getInstance: ->
       @instance ||= new SoundManager
 
-    # Returns the sounds.
-    getSounds: -> @sounds
-
-    constructor: ->
-      _(this).extend(Backbone.Events)
-      @audioContext = new webkitAudioContext
-      @sounds = new SoundSet
-      @remaining = 0
+    # Returns the sounds set with the given ID.
+    getSoundSet: (id) -> @soundSets.get(id)
 
     # Returns the audio context.
     getAudioContext: -> @audioContext
 
-    # Returns the sound with the given ID.
-    get: (id) -> @sounds.get(id)
+    constructor: ->
+      _(this).extend(Backbone.Events)
+      @audioContext = new webkitAudioContext
+      @soundSets = new Backbone.Collection([], {model: SoundSet})
+      @remaining = 0
 
-    # Loads the sound with the given ID from the given URL.
+    # Loads the given sounds.
+    loadSounds: (soundSets) ->
+      for id, sounds of soundSets
+        this.loadSoundSet(id, sounds)
+
+    # Loads the sound set with the given ID and sounds.
+    loadSoundSet: (id, sounds) ->
+      soundSet = new SoundSet(id: id)
+
+      for id, url of sounds
+        sound = this.loadSound(id, url)
+        soundSet.add(sound)
+
+      @soundSets.add(soundSet)
+
+    # Loads the sound with the given ID and URL.
     loadSound: (id, url) ->
       @remaining++
       sound = new Sound({id: id, url: url}, {sound_manager: this})
@@ -31,14 +43,9 @@ define ["models/sound", "models/sound_set"], (Sound, SoundSet) ->
       request.responseType = "arraybuffer"
       request.onload = => this._onSoundLoaded(sound, request.response)
       request.send()
-
-    # Loads the given sounds.
-    loadSounds: (map) ->
-      for id, url of map
-        this.loadSound(id, url)
+      sound
 
     _onSoundLoaded: (sound, data) =>
       @remaining--
       sound.set(buffer: @audioContext.createBuffer(data, false))
-      @sounds.add(sound)
       this.trigger("all:loaded") if @remaining == 0

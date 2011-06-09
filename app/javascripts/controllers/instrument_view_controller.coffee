@@ -11,11 +11,11 @@ define ["controllers/instrument_settings_view_controller", "views/pattern_view"]
       @navigationItem.rightButton = settingsButton
 
     loadView: ->
-      @view = new PatternView(model: @instrument.get("pattern"))
+      @view = new PatternView(model: @instrument.getPattern())
 
     _openInstrumentSettings: =>
       instrumentSettingsViewController = new InstrumentSettingsViewController(instrument: @instrument)
       @navigationController.pushViewController(instrumentSettingsViewController)
 
     _setTitle: =>
-      this.setTitle(@instrument.get("sound").toString())
+      this.setTitle(@instrument.getSoundSet().toString())
